@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\RegionController;
 use App\Http\Controllers\StateController;
-use App\Models\Region;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,8 +19,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/city/{city}', [CityController::class, 'show']);
 Route::get('/state/{state}', [StateController::class, 'show']);
 
-Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
+Route::prefix('admin')->group(function () {//middleware(['auth:sanctum'])->
     // rotas da região
-    Route::resource('region', Region::class);
-    Route::get('/region/city/{city}', [Region::class, 'findRegionsByCity']);
+    Route::resource('region', RegionController::class);
+    Route::get('/region/city/{city}', [RegionController::class, 'findRegionsByCity']);
 });

@@ -25,7 +25,7 @@ class RegionController extends Controller
      */
     public function index()
     {
-        Region::get()->paginate(15);
+        return $this->sendResponse(['regions' => Region::paginate(15)], 'Regiões encontradas');
     }
 
     /**
@@ -37,6 +37,7 @@ class RegionController extends Controller
     public function store(StoreRegion $request)
     {
         $region = new Region();
+        $region->city_id = $request->city_id;
         $region->title = $request->title;
         $region->save();
 
@@ -73,6 +74,8 @@ class RegionController extends Controller
             return $this->sendError('Região não encontrada.');
         }
 
+        if ($request->has('city_id'))
+            $region->city_id = $request->city_id;
         $region->title = $request->title;
         $region->save();
 
