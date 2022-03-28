@@ -1,6 +1,8 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\CityController;
+use App\Http\Controllers\RegionController;
+use App\Http\Controllers\StateController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/city/{city}', [CityController::class, 'show']);
+Route::get('/state/{state}', [StateController::class, 'show']);
+
+Route::prefix('admin')->group(function () {//middleware(['auth:sanctum'])->
+    // rotas da região
+    Route::resource('region', RegionController::class);
+    Route::get('/region/city/{city}', [RegionController::class, 'findRegionsByCity']);
 });
