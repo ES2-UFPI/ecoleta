@@ -29,6 +29,7 @@ class UpdateRegion extends FormRequest
     public function rules()
     {
         return [
+            'city_id' => ['nullable', 'exists:cities,id'],
             'title' => ['required', 'min:1', 'max:255'],
         ];
     }
