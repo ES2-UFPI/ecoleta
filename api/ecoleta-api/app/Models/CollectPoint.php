@@ -19,4 +19,9 @@ class CollectPoint extends Model
     {
         return $this->belongsTo(Region::class, 'region_id', 'id');
     }
+
+    public function collectionItem()
+    {
+        return $this->hasMany(CollectionItem::class, 'collect_point_id', 'id');
+    }
 }
