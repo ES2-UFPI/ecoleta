@@ -29,8 +29,4 @@ Route::prefix('admin')->group(function () {//middleware(['auth:sanctum'])->
     // rotas dos pontos de coleta
     Route::resource('collect_point', CollectPointController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::get('/collect_point/region/{region}', [CollectPointController::class, 'showCollectPointsByRegionID']);
-
-    // rotas dos items de um ponto de coleta
-    Route::resource('collectionItem', CollectionItemController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
-    Route::get('/collectionItem/collectPoint/{region}', [CollectionItemController::class, 'showCollectionItensByCollectPointID']);
 });
