@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRegion extends FormRequest
+class StoreCollectionItem extends FormRequest
 {
     public function response(array $errors)
     {
@@ -29,7 +29,7 @@ class UpdateRegion extends FormRequest
     public function rules()
     {
         return [
-            'city_id' => ['nullable', 'exists:cities,id'],
+            'collect_point_id' => ['required', 'exists:collect_points,id'],
             'title' => ['required', 'min:1', 'max:255'],
         ];
     }

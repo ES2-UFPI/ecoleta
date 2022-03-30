@@ -15,6 +15,6 @@ class StateController extends Controller
             return $this->sendError('Estado não encontrado.');
         }
 
-        return $this->sendResponse(['state' => CitiesByState::collection($state)], 'Estado encontrado com sucesso!');
+        return $this->sendResponse(['state' => new CitiesByState($state)], 'Estado encontrado com sucesso!');
     }
 }

@@ -19,4 +19,9 @@ class Region extends Model
     {
         return $this->belongsTo(City::class, 'city_id', 'id');
     }
+
+    public function collectPoint()
+    {
+        return $this->hasMany(CollectPoint::class, 'region_id', 'id');
+    }
 }
