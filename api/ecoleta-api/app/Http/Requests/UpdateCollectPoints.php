@@ -5,13 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCollectPoints extends FormRequest
-{
-    public function response(array $errors)
-    {
-        return response()->json($errors, 422);
-    }
-
-    /**
+{/**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
@@ -19,6 +13,11 @@ class UpdateCollectPoints extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    public function response(array $errors)
+    {
+        return response()->json($errors, 422);
     }
 
     /**
