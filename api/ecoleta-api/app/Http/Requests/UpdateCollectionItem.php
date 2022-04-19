@@ -6,11 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateCollectionItem extends FormRequest
 {
-    public function response(array $errors)
-    {
-        return response()->json($errors, 422);
-    }
-
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -19,6 +14,11 @@ class UpdateCollectionItem extends FormRequest
     public function authorize()
     {
         return true;
+    }
+
+    public function response(array $errors)
+    {
+        return response()->json($errors, 422);
     }
 
     /**
