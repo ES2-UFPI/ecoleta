@@ -1,5 +1,9 @@
 # Projeto Ecoleta 
 
+* Versão 0.0.1
+
+* [Link para a API no Heroku](https://ufpi-ecoleta.herokuapp.com/)
+
 * Esse projeto possui duas camadas de implementação:
 1. API
 2. APP
