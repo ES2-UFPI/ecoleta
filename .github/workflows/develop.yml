@@ -1,0 +1,14 @@
+name: Setando environment de produção
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    name: 🎉 Environment to Heroku
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://ufpi-ecoleta.herokuapp.com
