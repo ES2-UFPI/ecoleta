@@ -12,3 +12,5 @@ jobs:
     environment:
       name: production
       url: https://ufpi-ecoleta.herokuapp.com
+    steps:
+      - uses: actions/checkout@v2
