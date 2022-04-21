@@ -28,7 +28,7 @@ class UpdateCollectPoints extends FormRequest
     public function rules()
     {
         return [
-            'city_id' => ['required', 'exists:cities,id'],
+            'region_id' => ['required', 'exists:regions,id'],
             'title' => ['required', 'min:1', 'max:255'],
         ];
     }
