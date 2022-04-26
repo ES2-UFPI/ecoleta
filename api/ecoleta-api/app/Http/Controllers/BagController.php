@@ -2,84 +2,123 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBag;
+use App\Http\Requests\UpdateBag;
+use App\Http\Resources\ItemsByBag;
 use App\Models\Bag;
-use Illuminate\Http\Request;
+use App\Models\Item;
 
 class BagController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Listar todas as sacolas pendentes de um ponto de coleta
      */
-    public function index()
+    public function listAllBagPendding()
     {
-        //
+        $bags = Bag::where('discarded', false)->where('user_id', 1)->get();
+
+        return $this->sendResponse(['bags' => ItemsByBag::collection($bags)], 'Sacola de descarte encontradas');
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Listar todas as sacolas finalizadas de um ponto de coleta (que foram resgatadas por uma empresa)
      */
-    public function create()
+    public function listAllBagFinished()
     {
-        //
+        $bags = Bag::where('discarded', true)->where('user_id', 1)->get();
+
+        return $this->sendResponse(['bags' => ItemsByBag::collection($bags)], 'Sacola de descarte encontradas');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * cadastrar sacola de descarte em um ponto de coleta
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreBag $request)
     {
-        //
+        // verificações
+        if (count($request->item) !== count($request->quantity))
+            return $this->sendError('Informe a quantidade de cada item na sacola.');
+
+        $bag = new Bag();
+        $bag->user_id = $request->user_id;
+        $bag->collect_point_id = $request->collect_point_id;
+        $bag->discarded = false;
+        $bag->save();
+
+        // salvando items
+        foreach ($request->item as $key => $collection_item) {
+            $item = new Item();
+            $item->bag_id = $bag->id;
+            $item->item_id = $collection_item;
+            $item->quantity = $request->quantity[$key];
+            $item->save();
+        }
+
+        return $this->sendResponse(['bag' => $bag], 'Sacola de descarte cadastrada com sucesso!');
     }
 
     /**
-     * Display the specified resource.
+     * Visualizar uma sacola pelo id.
      *
      * @param  \App\Models\Bag  $bag
      * @return \Illuminate\Http\Response
      */
-    public function show(Bag $bag)
+    public function show(int $bag)
     {
-        //
+        $bag = Bag::where('id', $bag)->first();
+        if (is_null($bag)) {
+            return $this->sendError('Sacola de descarte não encontrado.');
+        }
+
+        return $this->sendResponse(['bag' => $bag], 'Sacola de descarte encontrada com sucesso!');
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Bag  $bag
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Bag $bag)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
+     * Finalizar/reabrir sacola de descarte
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Bag  $bag
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Bag $bag)
+    public function update(UpdateBag $request, int $bag)
     {
-        //
+        $bag = Bag::where('id', $bag)->first();
+        if (is_null($bag))
+            return $this->sendError('Sacola de descarte não encontrado.');
+
+        if (!$request->discarded)
+            return $this->sendError('Você não pode desfazer o descarte de uma sacola.');
+
+        $bag->discarded = $request->discarded;
+        $bag->save();
+
+        return $this->sendResponse(['bag' => $bag], 'Sacola de descarte atualizado com sucesso!');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Deletar sacola de descarte.
+     * Só pode deletar se a sacola ainda estiver pendente.
+     *
+     * Caso a sacola não seja finaizada em 15 dias, o sistema irá deletar a sacola.
      *
      * @param  \App\Models\Bag  $bag
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Bag $bag)
+    public function destroy(int $bag)
     {
-        //
+        $bag = Bag::where('id', $bag)->first();
+        if (is_null($bag))
+            return $this->sendError('Sacola de descarte não encontrado.');
+
+        if ($bag->discarded)
+            return $this->sendError('Você não pode excluir uma sacola já descartada.');
+
+        if (!$bag->discarded)
+            $bag->delete();
+
+        return $this->sendResponse([], 'Sacola de descarte excluída com sucesso!');
     }
 }

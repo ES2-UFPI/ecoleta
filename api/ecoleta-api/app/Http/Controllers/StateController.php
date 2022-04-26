@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class StateController extends Controller
 {
+    public function index(){
+        $states = State::all();
+        return $this->sendResponse(['states' => $states], 'Estados encontrados com sucesso!');
+    }
+
     public function show(int $state)
     {
         $state = State::where('id', $state)->first();
