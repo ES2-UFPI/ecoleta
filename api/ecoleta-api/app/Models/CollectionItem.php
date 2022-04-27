@@ -19,4 +19,9 @@ class CollectionItem extends Model
     {
         return $this->belongsTo(CollectPoint::class, 'collect_point_id', 'id');
     }
+
+    public function item()
+    {
+        return $this->hasMany(Item::class, 'item_id', 'id');
+    }
 }
