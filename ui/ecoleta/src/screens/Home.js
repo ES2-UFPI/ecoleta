@@ -2,7 +2,8 @@ import React, { useEffect, useState, Component } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { Picker } from '@react-native-picker/picker';
+// import { Picker } from '@react-native-picker/picker';
+import { PickerInput } from '../components/PickerInput';
 
 import api from '../services/api';
 
@@ -10,13 +11,17 @@ export default class Home extends Component {
   state = {
     estados: [],
     cidades: [],
+    estadoSelecionado: '',
     cidadeSelecionada: ''
   }
 
   buscaEstados = async () => {
     await api.get(`/states`).then(response => {
       this.setState({
-        estados: response.data.data.states
+        estados: response.data.data.states.map(value => ({
+          label: value.name,
+          value: value.id,
+        }))
       });
     });
   };
@@ -26,31 +31,27 @@ export default class Home extends Component {
   }
 
   render() {
-    const estados = this.state.estados.map((value, index) => {
-      return (
-        <Picker.Item
-          label={value.name}
-          value={value.id}
-          key={value.id}
-        />
-      )
-    });
-
     const setaCidades = async (stateID) => {
+      this.setState({ estadoSelecionado: stateID, })
+
       await api.get(`/state/${stateID}`).then(response => {
         this.setState({
-          cidades: response.data.data.state.cities
+          cidades: response.data.data.state.cities.map(value => ({
+            label: value.name,
+            value: value.id,
+          }))
         });
       });
     }
 
     const cidades = this.state.cidades.map((value, index) => {
       return (
-        <Picker.Item
-          label={value.name}
-          value={value.id}
-          key={value.id}
-        />
+        <View />
+        // <Picker.Item
+        //   label={value.name}
+        //   value={value.id}
+        //   key={value.id}
+        // />
       )
     })
 
@@ -62,34 +63,19 @@ export default class Home extends Component {
     return (
       <View style={styles.container}>
         <Text h1>Ecoleta</Text>
-        <Text h5>Seu marketplace de coletas de resíduos.</Text>
+        <Text h5 style={{marginBottom: 20}}>Seu marketplace de coletas de resíduos.</Text>
 
-        <Text h5>Escolha um estado</Text>
-        <Picker
-          style={{ height: 50, width: 220 }}
-          onValueChange={(value) => setaCidades(value)}
-        >
-          <Picker.Item
-            label='Selecione um estado'
-            value=''
-            key=''
-          />
-          {estados}
-        </Picker>
+        <PickerInput 
+        label='Escolha um estado'
+        itens={this.state.estados} 
+        onValueChange={setaCidades} 
+        value={this.state.estadoSelecionado} />
 
-        <Text h5>Escolha uma cidade</Text>
-        <Picker
-        style={{ height: 50, width: 220 }}
-          selectedValue={this.state.cidadeSelecionada}
+        <PickerInput 
+        label='Escolha uma cidade'
+        itens={this.state.cidades}
           onValueChange={(value) => this.setState({ cidadeSelecionada: value })}
-        >
-          <Picker.Item
-            label='Selecione uma cidade'
-            value=''
-            key=''
-          />
-          {cidades}
-        </Picker>
+          value={this.state.cidadeSelecionada} />
 
         <Button
           title=" Buscar "
