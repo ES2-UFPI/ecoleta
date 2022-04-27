@@ -15,8 +15,8 @@ class Item extends Model
         'bag_id', 'item_id', 'quantity'
     ];
 
-    // collection item
-    public function item()
+    // collection collectionItem
+    public function collectionItem()
     {
         return $this->belongsTo(CollectionItem::class, 'item_id', 'id');
     }

@@ -66,6 +66,7 @@ export default class Home extends Component {
 
         <Text h5>Escolha um estado</Text>
         <Picker
+          style={{ height: 50, width: 220 }}
           onValueChange={(value) => setaCidades(value)}
         >
           <Picker.Item
@@ -78,6 +79,7 @@ export default class Home extends Component {
 
         <Text h5>Escolha uma cidade</Text>
         <Picker
+        style={{ height: 50, width: 220 }}
           selectedValue={this.state.cidadeSelecionada}
           onValueChange={(value) => this.setState({ cidadeSelecionada: value })}
         >

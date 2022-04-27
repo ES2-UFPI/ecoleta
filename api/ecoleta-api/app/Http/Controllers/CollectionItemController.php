@@ -81,7 +81,7 @@ class CollectionItemController extends Controller
         $collectionItem->title = $request->title;
         $collectionItem->save();
 
-        return $this->sendResponse(['collectionItem' => $collectionItem], 'Item de ponto de coleta cadastrado com sucesso!');
+        return $this->sendResponse(['collectionItem' => $collectionItem], 'Item de ponto de coleta atualizado com sucesso!');
     }
 
     /**
