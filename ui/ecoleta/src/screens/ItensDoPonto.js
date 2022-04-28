@@ -14,7 +14,11 @@ export default class ItensDoPonto extends Component {
         itens: [],
         pontoDeColetaTitle: '',
         pontoDeColetaID: '',
-        modalVisible: false
+        modalVisible: false,
+        itensParaDescarte: [],
+        itensParaDescarteSelecionado: [],
+        itemSelecionadoNome: '',
+        itemSelecionadoID: ''
     }
 
     buscaItensDoPonto = async (pontoDeColetaTitle, itemID) => {
@@ -31,8 +35,25 @@ export default class ItensDoPonto extends Component {
         this.buscaItensDoPonto(pontoDeColetaTitle, itemID);
     }
 
-    setModalVisible = (visible) => {
-        this.setState({ modalVisible: visible });
+    setModalVisible = (visible, nome, id, armazenar) => {
+        if (armazenar && this.state.itensParaDescarteSelecionado.quantidade !== undefined) {
+            if (!this.state.itensParaDescarte.find(element => element.item === this.state.itemSelecionadoID))
+                this.state.itensParaDescarte.push(this.state.itensParaDescarteSelecionado);
+            else {
+                const index = this.state.itensParaDescarte.findIndex(element => element.item === this.state.itemSelecionadoID)
+                this.state.itensParaDescarte[index].quantidade = this.state.itensParaDescarteSelecionado.quantidade;
+            }
+
+            this.setState({
+                itensParaDescarteSelecionado: []
+            });
+        }
+
+        this.setState({
+            modalVisible: visible,
+            itemSelecionadoNome: nome,
+            itemSelecionadoID: id
+        });
     }
 
     render() {
@@ -41,7 +62,13 @@ export default class ItensDoPonto extends Component {
         });
 
         const sacolaDeDescarte = () => {
-            console.log('realizando descarte...')
+            console.log('realizando descarte...', this.state.itensParaDescarteSelecionado, this.state.itensParaDescarte)
+        }
+
+        const setaItem = (nome, item, quantidade) => {
+            this.setState({
+                itensParaDescarteSelecionado: { nome: nome, item: item, quantidade: quantidade }
+            });
         }
 
         const { modalVisible } = this.state;
@@ -70,52 +97,54 @@ export default class ItensDoPonto extends Component {
 
                 <Text h1>{this.state.pontoDeColetaTitle}</Text>
                 <Text h4>Itens do Ponto de Coleta:</Text>
-                <Text h6 style={{textAlign: 'center'}}>Escolha os itens que deseja descartar e informe a quantidade presionando em cada item da lista.</Text>
+                <Text h6 style={{ textAlign: 'center' }}>Escolha os itens que deseja descartar e informe a quantidade presionando em cada item da lista.</Text>
                 <ScrollView>
                     {itens.map(item => (
                         <View key={item.key}>
-                            <Modal
-                                animationType="slide"
-                                transparent={true}
-                                visible={modalVisible}
-                                onRequestClose={() => {
-                                    Alert.alert("Modal has been closed.");
-                                    this.setModalVisible(!modalVisible);
-                                }}
-                            >
-                                <View style={styles.centeredView}>
-                                    <View style={styles.modalView}>
-                                        <Text style={styles.modalText}>{item.name}</Text>
-                                        <Input
-                                            style={{ width: 300 }}
-                                            placeholder='Quantidade'
-                                        />
-                                        <Pressable
-                                            style={[styles.button, styles.buttonClose]}
-                                            onPress={() => this.setModalVisible(!modalVisible)}
-                                        >
-                                            <Text style={styles.textStyle}>Confirmar</Text>
-                                        </Pressable>
-                                        <Pressable
-                                            style={[styles.button, styles.buttonDelete]}
-                                            onPress={() => this.setModalVisible(!modalVisible)}
-                                        >
-                                            <Text style={styles.textStyle}>Apagar</Text>
-                                        </Pressable>
-                                    </View>
-                                </View>
-                            </Modal>
                             <Text
                                 style={styles.item}
-                                onPress={() => this.setModalVisible(true)}
-                            >{item.name} - Qtd.: 0</Text>
+                                onPress={() => this.setModalVisible(true, item.name, item.key, false)}
+                            >{item.name} - {item.key} - Qtd.: 0</Text>
                         </View>
                     ))
                     }
                 </ScrollView>
 
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert("Modal has been closed.");
+                        this.setModalVisible(!modalVisible, '', '', false);
+                    }}
+                >
+                    <View style={styles.centeredView}>
+                        <View style={styles.modalView}>
+                            <Text style={styles.modalText}>{this.state.itemSelecionadoNome}</Text>
+                            <Input
+                                keyboardType='numeric'
+                                style={{ width: 300 }}
+                                placeholder='Quantidade'
+                                onChangeText={(value) => setaItem(this.state.itemSelecionadoNome, this.state.itemSelecionadoID, value)}
+                            />
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => this.setModalVisible(!modalVisible, '', '', true)}
+                            >
+                                <Text style={styles.textStyle}>Confirmar</Text>
+                            </Pressable>
+                            <Pressable
+                                style={[styles.button, styles.buttonDelete]}
+                                onPress={() => this.setModalVisible(!modalVisible, '', '', false)}
+                            >
+                                <Text style={styles.textStyle}>Apagar</Text>
+                            </Pressable>
+                        </View>
+                    </View>
+                </Modal>
+
                 <Button
-                    style={{ margin: 10 }}
                     title=' Realizar Descarte'
                     icon={
                         <Icon
@@ -128,7 +157,6 @@ export default class ItensDoPonto extends Component {
                 />
 
                 <Button
-                    style={{ margin: 10 }}
                     title=' Realizar Coleta'
                     icon={
                         <Icon
