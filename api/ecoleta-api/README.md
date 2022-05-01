@@ -30,6 +30,9 @@ PS2: Os testes utilizam o banco sqlite.
 ``` php artisan db:seed --class=Client ```
 ``` php artisan db:seed --class=Company ```
 
+## Webpacks
+* Execute o comando ``` npm install ``` dentro do repositório para instalar as dependencias via npm. Após isso execute ``` npm run dev ``` para copiar os arquivos de estilo do site para a pasta public.
+
 ## Como rodar em localhost
 * PS1: Para utilizar em localhost você deve ter:
 1. php
@@ -95,8 +98,16 @@ Após isso, caso seja a primeira vez iniciando o projeto, execute os seeds dentr
 
 ``` ./vendor/bin/sail artisan db:seed --class=States ```
 ``` ./vendor/bin/sail artisan db:seed --class=Cities ```
+``` php artisan db:seed --class=Client ```
+``` php artisan db:seed --class=Company ```
+
+Também será necessário instalar as dependencias do npm. Acesse o terminal do app no Heroku e execute os passos de configuração da sessão **Webpacks**.
 
 ## Como executar deploy no heroku
+
+OBS1: É necessário que no app do Heroku tenha instalados o **heroku/php** e **heroku/nodejs** para que o app consiga executar o php e o node.
+OBS2: Adicione essa variável de ambiente no Heroku: **NPM_CONFIG_PRODUCTION = false**. Mais informações [aqui](https://dev.to/eduvin/how-to-deploy-a-laravel-vue-app-to-heroku-4kmg).
+OBS3: Adicione essa variável de ambiente no Heroku: **NODE_ENV=production**. É necessário para executar a build dos arquivos css e js do projeto web. Mais informações [aqui](https://blackdeerdev.com/heroku-build-script-for-laravel-and-vue/).
 
 Primeiro você deve fazer login com sua conta no heroku.
 
