@@ -1,6 +1,6 @@
 # Ecoleta - API REST 
 
-## Vesão 0.0.1
+## Vesão 0.2
 
 ## Tests
 * Para executar os testes do projeto execute:

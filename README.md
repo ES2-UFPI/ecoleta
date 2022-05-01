@@ -1,6 +1,6 @@
 # Projeto Ecoleta 
 
-* Versão 0.0.1
+* Versão 0.2
 
 * [Link para a API no Heroku](https://ufpi-ecoleta.herokuapp.com/)
 
