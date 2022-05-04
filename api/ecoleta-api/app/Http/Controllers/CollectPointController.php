@@ -96,7 +96,8 @@ class CollectPointController extends Controller
             return $this->sendError('Ponto de coleta não encontrado.');
         }
 
-        $collectPoint->delete();
+        if (!$collectPoint->delete())
+            return $this->sendError('Você só pode excluir um ponto de coleta caso ele não esteja vinculado a nada.');
 
         return $this->sendResponse([], 'Ponto de coleta excluído com sucesso!');
     }

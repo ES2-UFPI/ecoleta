@@ -24,4 +24,14 @@ class CollectPoint extends Model
     {
         return $this->hasMany(CollectionItem::class, 'collect_point_id', 'id');
     }
+
+    public function delete()
+    {
+        if (!is_null($this->collectionItem()->first()) || !is_null($this->region()->first()))
+            return false;
+
+        parent::delete();
+
+        return true;
+    }
 }

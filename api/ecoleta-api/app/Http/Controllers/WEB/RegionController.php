@@ -101,7 +101,8 @@ class RegionController extends Controller
             return $this->sendError('Região não encontrada.');
         }
 
-        $region->delete();
+        if (!$region->delete())
+        return redirect()->route('dashboard.region.index')->withErrors('Região não pode ser excluída pois há dados vinculados a essa região');
 
         return redirect()->route('dashboard.region.index');
     }

@@ -97,7 +97,8 @@ class CollectionItemController extends Controller
             return $this->sendError('Item de ponto de coleta não encontrado.');
         }
 
-        $collectionItem->delete();
+        if ($collectionItem->delete())
+            return $this->sendError('Você só pode excluir um item de ponto de coleta caso ele não esteja vinculado a nada.');
 
         return $this->sendResponse([], 'Item de ponto de coleta excluído com sucesso!');
     }

@@ -42,6 +42,7 @@ Route::prefix('dashboard')->group(function () {
     Route::get('ponto-de-coleta/cadastrar', [CollectPointController::class, 'create'])->name('dashboard.collectpoint.create');
     Route::post('ponto-de-coleta/cadastrar/do', [CollectPointController::class, 'store'])->name('dashboard.collectpoint.store');
     Route::get('ponto-de-coleta/{collectPoint}/visualizar', [CollectPointController::class, 'show'])->name('dashboard.collectpoint.show');
+    Route::get('ponto-de-coleta/{collectPoint}/visualizar/itens', [CollectPointController::class, 'items'])->name('dashboard.collectpoint.items');
     Route::put('ponto-de-coleta/{collectPoint}/atualizar/do', [CollectPointController::class, 'update'])->name('dashboard.collectpoint.update');
     Route::delete('ponto-de-coleta/{collectPoint}/remover', [CollectPointController::class, 'destroy'])->name('dashboard.collectpoint.destroy');
 
