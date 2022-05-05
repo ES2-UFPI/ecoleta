@@ -5,41 +5,23 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import api from '../services/api';
 
-export default class SacolaPendente extends Component {
+export default class ItensFinalizados extends Component {
     constructor() {
         super();
     }
 
     state = {
-        sacolasPendentes: []
+        items: []
     }
 
-    buscaSacolasPendentes = async () => {
-        await api.get(`/admin/bags/pending`).then(response => {
-            this.setState({
-                sacolasPendentes: response.data.data.bags
-            });
-        });
-    };
-
     componentDidMount() {
-        this.buscaSacolasPendentes();
+        const { items } = this.props.route.params;
+        this.setState({
+            items: items
+        });
     }
 
     render() {
-        const sacolas = this.state.sacolasPendentes.map((value, index) => {
-            return {
-                key: value.id,
-                name: value.collect_point.title,
-                value: value.collect_point.id,
-                items: value.item,
-            }
-        });
-
-        const verSacola = (items) => {
-            console.log('Visualizar itens');
-            this.props.navigation.navigate('Itens Pendentes', { items: items });
-        }
 
         return (
             <View style={styles.container} >
@@ -58,13 +40,17 @@ export default class SacolaPendente extends Component {
                     onPress={() => this.props.navigation.goBack()}
                 />
 
+                <Text h3>Itens</Text>
+
                 <ScrollView>
-                    {sacolas.map(item => (
-                        <View key={item.key}>
+                    {this.state.items.map(item => (
+                        <View key={item.id}>
                             <Text
                                 style={styles.item}
-                                onPress={() => verSacola(item.items)}
-                            >{item.name}</Text>
+                            >
+                                {item.item_id}
+                            </Text>
+                            <Text h6>Qtd.: {item.quantity}</Text>
                         </View>
                     ))
                     }
