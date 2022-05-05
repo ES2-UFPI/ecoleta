@@ -53,6 +53,8 @@ export default class Regiao extends Component {
                     onPress={() => this.props.navigation.goBack()}
                 />
 
+                <Text h3>Regiões</Text>
+
                 <ScrollView>
                     {regioes.map(item => (
                         <View key={item.key}>
