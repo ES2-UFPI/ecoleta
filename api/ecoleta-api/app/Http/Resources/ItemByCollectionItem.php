@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ItemsByBag extends JsonResource
+class ItemByCollectionItem extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,10 +15,9 @@ class ItemsByBag extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->resource->id,
-            'user' => $this->resource->client()->first(),
-            'collect_point' => $this->resource->collectPoint->first(),
-            'item' => ItemByCollectionItem::collection($this->resource->item()->get()),
+            "id" => $this->resource->id,
+            "quantity" => $this->resource->quantity,
+            "collectionItem" => $this->resource->collectionItem()->first(),
         ];
     }
 }
