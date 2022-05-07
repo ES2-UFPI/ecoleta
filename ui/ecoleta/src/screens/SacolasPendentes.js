@@ -30,14 +30,17 @@ export default class SacolasPendentes extends Component {
 
     render() {
 
-        const finalizarSacola = async () => {
-            await api.put(`/admin/bag/${this.state.items[0].bag_id}`, { discarded: true }).then(response => {
-                console.log('cadastro de sacola realizada com sucesso!');
-                this.props.navigation.navigate('Sacolas Entregues');
+        const resgatarSacola = async (bag_id) => {
+            const body = {
+                company_id: 2,
+                bag_id: bag_id
+            }
+            console.log(body)
+            await api.post(`/admin/bag-rescue`, body).then(response => {
+                console.log('cadastro do resgate da sacola realizada com sucesso!');
+                this.props.navigation.navigate('Resgate de Sacolas Pendentes');
             });
         }
-
-        // console.log(this.state.bags)
 
         return (
             <View style={styles.container} >
@@ -64,6 +67,7 @@ export default class SacolasPendentes extends Component {
                         <View key={bag.id}>
                             <Text
                                 style={styles.item}
+                                onPress={() => resgatarSacola(bag.id)}
                             >
                                 {bag.item.map(item => {
                                     return item.collectionItem.title + ` (${item.quantity}) , `
@@ -73,19 +77,6 @@ export default class SacolasPendentes extends Component {
                     ))
                     }
                 </ScrollView>
-
-                <Button
-                    style={{ margin: 10 }}
-                    title=' Resgatar Sacola'
-                    icon={
-                        <Icon
-                            name='trash'
-                            size={15}
-                            color='blue'
-                        />
-                    }
-                    onPress={() => finalizarSacola()}
-                />
             </View>
         );
     }
