@@ -60,7 +60,7 @@ export default class SacolasPendentes extends Component {
                 />
 
                 <Text h3>Sacolas:</Text>
-                <Text h6>Itens (qtd. do item na sacola)</Text>
+                <Text h5>Selecione uma sacola para realizar o resgate.</Text>
 
                 <ScrollView>
                     {this.state.bags.map(bag => (
@@ -70,7 +70,7 @@ export default class SacolasPendentes extends Component {
                                 onPress={() => resgatarSacola(bag.id)}
                             >
                                 {bag.item.map(item => {
-                                    return item.collectionItem.title + ` (${item.quantity}) , `
+                                    return item.collectionItem.title + ` (${item.quantity} itens) , `
                                 })}
                             </Text>
                         </View>
