@@ -19,6 +19,13 @@ class CollectPointController extends Controller
         return $this->sendResponse(['collectPoints' => $region->collectPoint()->get()], 'Pontos de coleta encontrados');
     }
 
+    public function showCollectPointsByQueryItem($queryItem)
+    {
+        $collectPoint = CollectPoint::join('collection_items', 'collection_items.collect_point_id', 'collect_points.id')->where('collection_items.title', 'like', '%' . $queryItem . '%')->get();
+
+        return $this->sendResponse(['collectPoint' => $collectPoint], 'Pontos de coleta encontrados');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -96,7 +103,8 @@ class CollectPointController extends Controller
             return $this->sendError('Ponto de coleta não encontrado.');
         }
 
-        $collectPoint->delete();
+        if (!$collectPoint->delete())
+            return $this->sendError('Você só pode excluir um ponto de coleta caso ele não esteja vinculado a nada.');
 
         return $this->sendResponse([], 'Ponto de coleta excluído com sucesso!');
     }

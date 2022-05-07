@@ -12,19 +12,20 @@ export default class ItensDoPonto extends Component {
 
     state = {
         itens: [],
-        pontoDeColetaTitle: '',
         pontoDeColetaID: '',
+        pontoDeColetaTitle: '',
         modalVisible: false,
-        itensParaDescarte: [],
-        itensParaDescarteSelecionado: [],
-        itemSelecionadoNome: '',
-        itemSelecionadoID: ''
+        itemTitle: '',
+        itemQtd: 0,
+        itemSelected: {},
+        itensBag: []
     }
 
     buscaItensDoPonto = async (pontoDeColetaTitle, itemID) => {
         await api.get(`/admin/collectionItem/collectPoint/${itemID}`).then(response => {
             this.setState({
                 itens: response.data.data.collectionItems,
+                pontoDeColetaID: itemID,
                 pontoDeColetaTitle: pontoDeColetaTitle
             });
         });
@@ -35,24 +36,33 @@ export default class ItensDoPonto extends Component {
         this.buscaItensDoPonto(pontoDeColetaTitle, itemID);
     }
 
-    setModalVisible = (visible, nome, id, armazenar) => {
-        if (armazenar && this.state.itensParaDescarteSelecionado.quantidade !== undefined) {
-            if (!this.state.itensParaDescarte.find(element => element.item === this.state.itemSelecionadoID))
-                this.state.itensParaDescarte.push(this.state.itensParaDescarteSelecionado);
-            else {
-                const index = this.state.itensParaDescarte.findIndex(element => element.item === this.state.itemSelecionadoID)
-                this.state.itensParaDescarte[index].quantidade = this.state.itensParaDescarteSelecionado.quantidade;
-            }
+    setModalVisible = (visible, item, qtd, update, destroy) => {
+        const itemBag = this.state.itensBag.filter(itemSelected => itemSelected.key === item.key);
+        if (!itemBag.length) {
+            this.state.itensBag.push(item);
+        }
 
-            this.setState({
-                itensParaDescarteSelecionado: []
+        if (update) {
+            const itensBag = this.state.itensBag.filter(itemSelected => itemSelected.key !== item.key);
+            this.state.itensBag = itensBag;
+            this.state.itensBag.push({
+                key: item.key,
+                name: item.name,
+                value: qtd
             });
         }
 
+        if (destroy) {
+            const itensBag = this.state.itensBag.filter(itemSelected => itemSelected.key !== item.key);
+            this.state.itensBag = itensBag;
+        }
+
+        this.state.itemSelected = item;
+
         this.setState({
             modalVisible: visible,
-            itemSelecionadoNome: nome,
-            itemSelecionadoID: id
+            itemTitle: item.name,
+            itemQtd: 0,
         });
     }
 
@@ -61,14 +71,38 @@ export default class ItensDoPonto extends Component {
             return { name: value.title, value: value.id, key: value.id }
         });
 
-        const sacolaDeDescarte = () => {
-            console.log('realizando descarte...', this.state.itensParaDescarteSelecionado, this.state.itensParaDescarte)
+        const sacolaDeDescarte = async () => {
+            if (!this.state.itensBag.length) {
+                console.log('Selecione pelo menos um item.')
+                return;
+            }
+
+            const items = this.state.itensBag.map(item => {
+                return item.key
+            });
+
+            const quantities = this.state.itensBag.map(item => {
+                return item.value
+            });
+
+            const body = {
+                user_id: 1,
+                collect_point_id: this.state.pontoDeColetaID,
+                item: items,
+                quantity: quantities
+            };
+
+            await api.post(`/admin/bag`, body).then(response => {
+                console.log('cadastro de sacola realizada com sucesso!');
+                this.props.navigation.navigate('Sacolas Pendentes');
+            });
+
+            // console.log('\n---inicio---', this.state.itensBag, '\n---fim---')
         }
 
-        const setaItem = (nome, item, quantidade) => {
-            this.setState({
-                itensParaDescarteSelecionado: { nome: nome, item: item, quantidade: quantidade }
-            });
+        const resgateDeSacolas = () => {
+            console.log('realizar resgate de sacolas');
+            this.props.navigation.navigate('Sacolas Pendentes', {pontoDeColetaId: this.state.pontoDeColetaID});
         }
 
         const { modalVisible } = this.state;
@@ -97,14 +131,14 @@ export default class ItensDoPonto extends Component {
 
                 <Text h1>{this.state.pontoDeColetaTitle}</Text>
                 <Text h4>Itens do Ponto de Coleta:</Text>
-                <Text h6 style={{ textAlign: 'center' }}>Escolha os itens que deseja descartar e informe a quantidade presionando em cada item da lista.</Text>
+                <Text h6 style={{ textAlign: 'center' }}>Escolha os itens que deseja descartar e informe a quantidade selecionando um item da lista.</Text>
                 <ScrollView>
                     {itens.map(item => (
                         <View key={item.key}>
                             <Text
                                 style={styles.item}
-                                onPress={() => this.setModalVisible(true, item.name, item.key, false)}
-                            >{item.name} - {item.key} - Qtd.: 0</Text>
+                                onPress={() => this.setModalVisible(true, item, 0, false, false)}
+                            >{item.name} - Qtd.: 0</Text>
                         </View>
                     ))
                     }
@@ -116,27 +150,27 @@ export default class ItensDoPonto extends Component {
                     visible={modalVisible}
                     onRequestClose={() => {
                         Alert.alert("Modal has been closed.");
-                        this.setModalVisible(!modalVisible, '', '', false);
+                        this.setModalVisible(!modalVisible, '', 0, false, false);
                     }}
                 >
                     <View style={styles.centeredView}>
                         <View style={styles.modalView}>
-                            <Text style={styles.modalText}>{this.state.itemSelecionadoNome}</Text>
+                            <Text style={styles.modalText}>{this.state.itemTitle}</Text>
                             <Input
-                                keyboardType='numeric'
                                 style={{ width: 300 }}
+                                keyboardType="numeric"
                                 placeholder='Quantidade'
-                                onChangeText={(value) => setaItem(this.state.itemSelecionadoNome, this.state.itemSelecionadoID, value)}
+                                onChangeText={(value) => this.setState({ itemQtd: value })}
                             />
                             <Pressable
                                 style={[styles.button, styles.buttonClose]}
-                                onPress={() => this.setModalVisible(!modalVisible, '', '', true)}
+                                onPress={() => this.setModalVisible(!modalVisible, this.state.itemSelected, this.state.itemQtd, true, false)}
                             >
                                 <Text style={styles.textStyle}>Confirmar</Text>
                             </Pressable>
                             <Pressable
                                 style={[styles.button, styles.buttonDelete]}
-                                onPress={() => this.setModalVisible(!modalVisible, '', '', false)}
+                                onPress={() => this.setModalVisible(!modalVisible, this.state.itemSelected, 0, false, true)}
                             >
                                 <Text style={styles.textStyle}>Apagar</Text>
                             </Pressable>
@@ -165,6 +199,7 @@ export default class ItensDoPonto extends Component {
                             color='blue'
                         />
                     }
+                    onPress={() => resgateDeSacolas()}
                 />
             </View>
         );

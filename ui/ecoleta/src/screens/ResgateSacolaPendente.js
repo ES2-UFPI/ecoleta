@@ -28,7 +28,12 @@ export default class ResgateSacolaPendente extends Component {
 
     render() {
         const sacolas = this.state.resgateDeSacolasPendentes.map((value, index) => {
-            return { name: value.bag.collect_point.title, value: value.bag.collect_point.id, key: value.bag.collect_point.id }
+            return {
+                name: value.bag.collect_point.title,
+                value: value.bag.collect_point.id,
+                key: value.bag.id,
+                items: value.bag.items,
+            }
         });
 
         console.log(sacolas)

@@ -28,13 +28,17 @@ export default class SacolaEntregue extends Component {
 
     render() {
         const sacolas = this.state.sacolasFinalizadas.map((value, index) => {
-            return { name: value.collect_point.title, value: value.collect_point.id, key: value.collect_point.id }
+            return {
+                key: value.id,
+                name: value.collect_point.title,
+                value: value.collect_point.id,
+                items: value.item,
+            }
         });
 
-        console.log(sacolas)
-
-        const verSacola = () => {
-            console.log('ver sacola finalizada')
+        const verSacola = (items) => {
+            console.log('Visualizar itens');
+            this.props.navigation.navigate('Itens Entregues', { items: items });
         }
 
         return (
@@ -59,7 +63,7 @@ export default class SacolaEntregue extends Component {
                         <View key={item.key}>
                             <Text
                                 style={styles.item}
-                                onPress={() => verSacola(item.key)}
+                                onPress={() => verSacola(item.items)}
                             >{item.name}</Text>
                         </View>
                     ))
