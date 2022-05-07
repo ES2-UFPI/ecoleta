@@ -1,6 +1,6 @@
 import React, { useState, Component } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { Text, Button } from 'react-native-elements';
+import { Text, Button, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import api from '../services/api';
@@ -11,7 +11,10 @@ export default class Regiao extends Component {
     }
 
     state = {
-        regioes: []
+        regioes: [],
+        textItem: '',
+        region: '',
+        city: ''
     }
 
     buscaRegioes = async (cityID) => {
@@ -23,6 +26,9 @@ export default class Regiao extends Component {
     };
 
     componentDidMount() {
+        this.setState({
+            city: this.props.route.params.cityID
+        })
         this.buscaRegioes(this.props.route.params.cityID);
     }
 
@@ -34,6 +40,11 @@ export default class Regiao extends Component {
         const pontosDeColeta = (pontoID) => {
             if (pontoID)
                 this.props.navigation.navigate('Pontos de Coleta', { pontoID });
+        }
+
+        const pesquisarPorPonto = () => {
+            if (this.state.textItem)
+                this.props.navigation.navigate('Pesquisa de Pontos de Coleta', { search: this.state.textItem, city: this.state.city });
         }
 
         return (
@@ -54,6 +65,33 @@ export default class Regiao extends Component {
                 />
 
                 <Text h3>Regiões</Text>
+
+                <Input
+                    placeholder='Pesquisar por itens de descarte'
+                    leftIcon={
+                        <Icon
+                            name='search'
+                            size={24}
+                            color='black'
+                        />
+                    }
+                    onChangeText={value => this.setState({ textItem: value })}
+                />
+                <Button
+                    style={{
+                        width: 60,
+                        marginLeft: 350
+                    }}
+                    icon={
+                        <Icon
+                            name='search'
+                            size={15}
+                            color='blue'
+                        />
+                    }
+                    title=' Pesquisar'
+                    onPress={() => pesquisarPorPonto()}
+                />
 
                 <ScrollView>
                     {regioes.map(item => (
