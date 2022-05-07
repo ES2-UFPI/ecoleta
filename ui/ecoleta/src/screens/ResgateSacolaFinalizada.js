@@ -31,7 +31,7 @@ export default class ResgateSacolaFinalizada extends Component {
             return { 
                 name: value.bag.collect_point.title, 
                 value: value.bag.collect_point.id, 
-                key: value.bag.collect_point.id,
+                key: value.id,
                 items: value.bag.items,
             }
         });

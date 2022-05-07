@@ -31,15 +31,14 @@ export default class ResgateSacolaPendente extends Component {
             return {
                 name: value.bag.collect_point.title,
                 value: value.bag.collect_point.id,
-                key: value.bag.id,
+                key: value.id,
                 items: value.bag.items,
             }
         });
 
-        console.log(sacolas)
-
-        const verSacola = () => {
+        const verSacola = (items, bagRescueId) => {
             console.log('ver resgate de sacola pendente')
+            this.props.navigation.navigate('Itens de Resgate Pendentes', { bagRescueId: bagRescueId, items: items });
         }
 
         return (
@@ -64,7 +63,7 @@ export default class ResgateSacolaPendente extends Component {
                         <View key={item.key}>
                             <Text
                                 style={styles.item}
-                                onPress={() => verSacola(item.key)}
+                                onPress={() => verSacola(item.items, item.key)}
                             >{item.name}</Text>
                         </View>
                     ))
