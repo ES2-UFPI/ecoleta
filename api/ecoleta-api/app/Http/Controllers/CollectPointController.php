@@ -19,9 +19,15 @@ class CollectPointController extends Controller
         return $this->sendResponse(['collectPoints' => $region->collectPoint()->get()], 'Pontos de coleta encontrados');
     }
 
-    public function showCollectPointsByQueryItem($queryItem)
+    public function showCollectPointsByQueryItem($queryItem, $city)
     {
-        $collectPoint = CollectPoint::join('collection_items', 'collection_items.collect_point_id', 'collect_points.id')->where('collection_items.title', 'like', '%' . $queryItem . '%')->get();
+        $collectPoint = CollectPoint::join('collection_items', 'collection_items.collect_point_id', 'collect_points.id')
+            ->join('regions', 'regions.id', 'collect_points.region_id')
+            ->groupBy('collect_points.id')
+            ->where('collection_items.title', 'like', '%' . $queryItem . '%')
+            ->where('regions.city_id', $city)
+            ->select('collect_points.id', 'collect_points.title')
+            ->get();
 
         return $this->sendResponse(['collectPoint' => $collectPoint], 'Pontos de coleta encontrados');
     }
