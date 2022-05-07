@@ -3,44 +3,23 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import api from '../services/api';
-
-export default class ResgateSacolaPendente extends Component {
+export default class ItensDeResgatePendentes extends Component {
     constructor() {
         super();
     }
 
     state = {
-        resgateDeSacolasPendentes: []
+        items: []
     }
 
-    buscaresgateDeSacolasPendentes = async () => {
-        await api.get(`/admin/bag-rescue/rescues/pending`).then(response => {
-            this.setState({
-                resgateDeSacolasPendentes: response.data.data.bags
-            });
-        });
-    };
-
     componentDidMount() {
-        this.buscaresgateDeSacolasPendentes();
+        const { items } = this.props.route.params;
+        this.setState({
+            items: items
+        });
     }
 
     render() {
-        const sacolas = this.state.resgateDeSacolasPendentes.map((value, index) => {
-            return {
-                name: value.bag.collect_point.title,
-                value: value.bag.collect_point.id,
-                key: value.bag.id,
-                items: value.bag.items,
-            }
-        });
-
-        console.log(sacolas)
-
-        const verSacola = () => {
-            console.log('ver resgate de sacola pendente')
-        }
 
         return (
             <View style={styles.container} >
@@ -59,13 +38,17 @@ export default class ResgateSacolaPendente extends Component {
                     onPress={() => this.props.navigation.goBack()}
                 />
 
+                <Text h3>Itens</Text>
+
                 <ScrollView>
-                    {sacolas.map(item => (
-                        <View key={item.key}>
+                    {this.state.items.map(item => (
+                        <View key={item.id}>
                             <Text
                                 style={styles.item}
-                                onPress={() => verSacola(item.key)}
-                            >{item.name}</Text>
+                            >
+                                {item.collectionItem.title}
+                            </Text>
+                            <Text h6>Qtd.: {item.quantity}</Text>
                         </View>
                     ))
                     }

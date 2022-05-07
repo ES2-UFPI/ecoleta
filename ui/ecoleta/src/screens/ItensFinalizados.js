@@ -48,7 +48,7 @@ export default class ItensFinalizados extends Component {
                             <Text
                                 style={styles.item}
                             >
-                                {item.item_id}
+                                {item.collectionItem.title}
                             </Text>
                             <Text h6>Qtd.: {item.quantity}</Text>
                         </View>
