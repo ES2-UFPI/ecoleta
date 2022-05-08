@@ -51,13 +51,14 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./ui/ecoleta
+        working-directory: ui/ecoleta
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: 16.x
           cache: npm
+          cache-dependency-path: ui/ecoleta/package-lock.json
       - name: Setup Expo and EAS
         uses: expo/expo-github-action@v7
         with:
