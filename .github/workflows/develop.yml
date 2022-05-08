@@ -43,7 +43,7 @@ jobs:
         appdir: api/ecoleta-api
 
     environment:
-      name: production
+      name: API
       url: https://ufpi-ecoleta.herokuapp.com
 
   build:
@@ -73,3 +73,6 @@ jobs:
         run: yarn install
       - name: 🚀 Publish app
         run: expo publish --non-interactive
+    environment:
+      name: Application
+      url: https://expo.dev/@filipeas/ecoleta
