@@ -69,3 +69,7 @@ jobs:
         run: npm ci
       - name: Build on EAS
         run: eas build --platform android --non-interactive
+      - name: 📦 Install dependencies
+        run: yarn install
+      - name: 🚀 Publish app
+        run: expo publish --non-interactive
