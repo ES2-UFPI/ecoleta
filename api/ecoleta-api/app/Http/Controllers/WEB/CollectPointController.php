@@ -54,6 +54,8 @@ class CollectPointController extends Controller
         $collectPoint = new CollectPoint();
         $collectPoint->region_id = $request->region_id;
         $collectPoint->title = $request->title;
+        $collectPoint->latitude = $request->latitude;
+        $collectPoint->longitude = $request->longitude;
         $collectPoint->save();
 
         return redirect()->route('dashboard.collectpoint.show', ['collectPoint' => $collectPoint->id]);
@@ -109,6 +111,8 @@ class CollectPointController extends Controller
         if ($request->has('region_id'))
             $collectPoint->region_id = $request->region_id;
         $collectPoint->title = $request->title;
+        $collectPoint->latitude = $request->latitude;
+        $collectPoint->longitude = $request->longitude;
         $collectPoint->save();
 
         return redirect()->route('dashboard.collectpoint.show', ['collectPoint' => $collectPoint->id]);

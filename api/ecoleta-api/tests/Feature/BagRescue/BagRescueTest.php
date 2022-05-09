@@ -43,7 +43,9 @@ class BagRescueTest extends TestCase
             'api/admin/collect_point',
             [
                 'region_id' => 1,
-                'title' => 'Mercado do Sr. João'
+                'title' => 'Mercado do Sr. João',
+                'latitude' => '123456',
+                'longitude' => '123456',
             ],
             ['Accept' => 'application/json']
         )
@@ -107,7 +109,9 @@ class BagRescueTest extends TestCase
             'api/admin/collect_point',
             [
                 'region_id' => 1,
-                'title' => 'Mercado do Sr. João'
+                'title' => 'Mercado do Sr. João',
+                'latitude' => '123456',
+                'longitude' => '123456',
             ],
             ['Accept' => 'application/json']
         )
@@ -181,7 +185,9 @@ class BagRescueTest extends TestCase
             'api/admin/collect_point',
             [
                 'region_id' => 1,
-                'title' => 'Mercado do Sr. João'
+                'title' => 'Mercado do Sr. João',
+                'latitude' => '123456',
+                'longitude' => '123456',
             ],
             ['Accept' => 'application/json']
         )
@@ -255,7 +261,9 @@ class BagRescueTest extends TestCase
             'api/admin/collect_point',
             [
                 'region_id' => 1,
-                'title' => 'Mercado do Sr. João'
+                'title' => 'Mercado do Sr. João',
+                'latitude' => '123456',
+                'longitude' => '123456',
             ],
             ['Accept' => 'application/json']
         )

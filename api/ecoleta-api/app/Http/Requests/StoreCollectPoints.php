@@ -31,6 +31,8 @@ class StoreCollectPoints extends FormRequest
         return [
             'region_id' => ['required', 'exists:regions,id'],
             'title' => ['required', 'min:1', 'max:255'],
+            'latitude' => ['required', 'min:1', 'max:255'],
+            'longitude' => ['required', 'min:1', 'max:255'],
         ];
     }
 }

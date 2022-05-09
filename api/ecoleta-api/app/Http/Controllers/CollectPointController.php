@@ -53,6 +53,8 @@ class CollectPointController extends Controller
         $collectPoint = new CollectPoint();
         $collectPoint->region_id = $request->region_id;
         $collectPoint->title = $request->title;
+        $collectPoint->latitude = $request->latitude;
+        $collectPoint->longitude = $request->longitude;
         $collectPoint->save();
 
         return $this->sendResponse(['collectPoint' => $collectPoint], 'Ponto de coleta cadastrado com sucesso!');
@@ -91,6 +93,8 @@ class CollectPointController extends Controller
         if ($request->has('region_id'))
             $collectPoint->region_id = $request->region_id;
         $collectPoint->title = $request->title;
+        $collectPoint->latitude = $request->latitude;
+        $collectPoint->longitude = $request->longitude;
         $collectPoint->save();
 
         return $this->sendResponse(['collectPoint' => $collectPoint], 'Ponto de Coleta cadastrado com sucesso!');
