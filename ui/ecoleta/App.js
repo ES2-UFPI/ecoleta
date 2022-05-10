@@ -14,6 +14,8 @@ import SacolaPendente from './src/screens/SacolaPendente';
 import SacolaEntregue from './src/screens/SacolaEntregue';
 import ResgateSacolaPendente from './src/screens/ResgateSacolaPendente';
 import ResgateSacolaFinalizada from './src/screens/ResgateSacolaFinalizada';
+import ItensPendentes from './src/screens/ItensPendentes';
+import ItensFinalizados from './src/screens/ItensFinalizados';
 
 function Exit(){
   return (
@@ -53,7 +55,9 @@ const LeftDrawerScreen = () => {
     <LeftDrawer.Navigator screenOptions={{ drawerPosition: 'left' }}>
       <LeftDrawer.Screen name="Ecoleta" component={HomeScreen} />
       <LeftDrawer.Screen name="Sacolas Pendentes" component={SacolaPendente} />
+      <LeftDrawer.Screen name="Itens Pendentes" component={ItensPendentes} />
       <LeftDrawer.Screen name="Sacolas Entregues" component={SacolaEntregue} />
+      <LeftDrawer.Screen name="Itens Entregues" component={ItensFinalizados} />
       <LeftDrawer.Screen name="Resgate de Sacolas Pendentes" component={ResgateSacolaPendente} />
       <LeftDrawer.Screen name="Resgate de Sacolas Finalizadas" component={ResgateSacolaFinalizada} />
       {/* <LeftDrawer.Screen name="Perfil" component={Profile} />
