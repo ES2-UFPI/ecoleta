@@ -15,10 +15,17 @@ export default class ItensFinalizados extends Component {
     }
 
     componentDidMount() {
-        const { items } = this.props.route.params;
-        this.setState({
-            items: items
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            console.log('Atualizando tela ItensFinalizados');
+            const { items } = this.props.route.params;
+            this.setState({
+                items: items
+            });
         });
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     render() {
@@ -26,9 +33,9 @@ export default class ItensFinalizados extends Component {
         return (
             <View style={styles.container} >
                 <Button
-                    style={{
-                        width: 60,
-                        marginLeft: 350
+                    title=' Voltar'
+                    containerStyle={{
+                        width: '100%', marginLeft: 0
                     }}
                     icon={
                         <Icon

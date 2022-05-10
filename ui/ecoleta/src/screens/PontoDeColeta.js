@@ -1,5 +1,6 @@
 import React, { useState, Component } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import MapView, { Marker, Callout } from 'react-native-maps';
+import { ScrollView, StyleSheet, View, Dimensions } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -11,6 +12,8 @@ export default class PontoDeColeta extends Component {
     }
 
     state = {
+        latitudeInit: -5.05296,
+        longitudeInit: -42.79038,
         pontosDeColeta: []
     }
 
@@ -23,12 +26,24 @@ export default class PontoDeColeta extends Component {
     };
 
     componentDidMount() {
-        this.buscaPontosDeColeta(this.props.route.params.pontoID);
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            console.log('Atualizando tela PontoDeColeta');
+            this.buscaPontosDeColeta(this.props.route.params.pontoID);
+        });
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     render() {
         const pontos = this.state.pontosDeColeta.map((value, index) => {
-            return { name: value.title, value: value.id, key: value.id }
+            if (index === 0) {
+                this.state.latitudeInit = parseFloat(value.latitude);
+                this.state.longitudeInit = parseFloat(value.longitude);
+            }
+
+            return { name: value.title, value: value.id, key: value.id, latitude: value.latitude, longitude: value.longitude }
         });
 
         const itensDoPontoDeColeta = (pontoDeColetaTitle, itemID) => {
@@ -39,9 +54,9 @@ export default class PontoDeColeta extends Component {
         return (
             <View style={styles.container} >
                 <Button
-                    style={{
-                        width: 60,
-                        marginLeft: 350
+                    title=' Voltar'
+                    containerStyle={{
+                        width: '100%', marginLeft: 0
                     }}
                     icon={
                         <Icon
@@ -54,8 +69,9 @@ export default class PontoDeColeta extends Component {
                 />
 
                 <Text h3>Pontos de coleta</Text>
+                <Text h5>Veja no mapa abaixo os pontos de coleta.</Text>
 
-                <ScrollView>
+                {/* <ScrollView>
                     {pontos.map(item => (
                         <View key={item.key}>
                             <Text
@@ -65,7 +81,46 @@ export default class PontoDeColeta extends Component {
                         </View>
                     ))
                     }
-                </ScrollView>
+                </ScrollView> */}
+
+
+
+                <MapView
+                    style={styles.map}
+                    region={{
+                        latitude: this.state.latitudeInit,
+                        longitude: this.state.longitudeInit,
+                        latitudeDelta: 0.05,
+                        longitudeDelta: 0.05,
+                    }}
+                >
+                    {pontos.map(item => (
+                        <Marker
+                            key={item.key}
+                            coordinate={{
+                                latitude: parseFloat(item.latitude),
+                                longitude: parseFloat(item.longitude)
+                            }}
+                            title={item.name}
+                            description={item.name}
+                        >
+                            <Button
+                                icon={
+                                    <Icon
+                                        name='recycle'
+                                        size={15}
+                                        color='white'
+                                        backgroundColor='green'
+                                    />
+                                }
+                            />
+                            <Callout
+                                onPress={() => itensDoPontoDeColeta(item.name, item.key)}
+                            >
+                            </Callout>
+                        </Marker>
+                    ))}
+                </MapView>
             </View>
         );
     }
@@ -77,5 +132,9 @@ const styles = StyleSheet.create({
         margin: 5,
         fontSize: 20,
         backgroundColor: '#eee',
+    },
+    map: {
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
     },
 });

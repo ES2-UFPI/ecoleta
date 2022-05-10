@@ -64,7 +64,7 @@ const LeftDrawerScreen = () => {
   return (
     <LeftDrawer.Navigator screenOptions={{ drawerPosition: 'left' }}>
       <LeftDrawer.Screen name="Ecoleta" component={HomeScreen} />
-      <LeftDrawer.Screen name="Sacolas Pendentes" component={SacolaPendente} />
+      <LeftDrawer.Screen name="Sacola Pendente" component={SacolaPendente} />
       <LeftDrawer.Screen name="Sacolas Entregues" component={SacolaEntregue} />
       <LeftDrawer.Screen name="Resgate de Sacolas Pendentes" component={ResgateSacolaPendente} />
       <LeftDrawer.Screen name="Resgate de Sacolas Finalizadas" component={ResgateSacolaFinalizada} />

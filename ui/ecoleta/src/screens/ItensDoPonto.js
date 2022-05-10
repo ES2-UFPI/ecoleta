@@ -32,8 +32,15 @@ export default class ItensDoPonto extends Component {
     };
 
     componentDidMount() {
-        const { pontoDeColetaTitle, itemID } = this.props.route.params;
-        this.buscaItensDoPonto(pontoDeColetaTitle, itemID);
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            console.log('Atualizando tela ItensDoPonto');
+            const { pontoDeColetaTitle, itemID } = this.props.route.params;
+            this.buscaItensDoPonto(pontoDeColetaTitle, itemID);
+        });
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     setModalVisible = (visible, item, qtd, update, destroy) => {
@@ -94,7 +101,8 @@ export default class ItensDoPonto extends Component {
 
             await api.post(`/admin/bag`, body).then(response => {
                 console.log('cadastro de sacola realizada com sucesso!');
-                this.props.navigation.navigate('Sacolas Pendentes');
+                Alert.alert('Cadastro de sacola realizada com sucesso!');
+                this.props.navigation.navigate('Sacola Pendente');
             });
 
             // console.log('\n---inicio---', this.state.itensBag, '\n---fim---')
@@ -102,7 +110,7 @@ export default class ItensDoPonto extends Component {
 
         const resgateDeSacolas = () => {
             console.log('realizar resgate de sacolas');
-            this.props.navigation.navigate('Sacolas Pendentes', {pontoDeColetaId: this.state.pontoDeColetaID});
+            this.props.navigation.navigate('Sacolas Pendentes', { pontoDeColetaId: this.state.pontoDeColetaID });
         }
 
         const { modalVisible } = this.state;
@@ -110,9 +118,9 @@ export default class ItensDoPonto extends Component {
         return (
             <View style={styles.container} >
                 <Button
-                    style={{
-                        width: 60,
-                        marginLeft: 350
+                title=' Voltar'
+                    containerStyle={{
+                        width: '100%', marginLeft: 0
                     }}
                     icon={
                         <Icon
@@ -138,7 +146,7 @@ export default class ItensDoPonto extends Component {
                             <Text
                                 style={styles.item}
                                 onPress={() => this.setModalVisible(true, item, 0, false, false)}
-                            >{item.name} - Qtd.: 0</Text>
+                            >{item.name}</Text>
                         </View>
                     ))
                     }
@@ -180,6 +188,9 @@ export default class ItensDoPonto extends Component {
 
                 <Button
                     title=' Realizar Descarte'
+                    containerStyle={{
+                        width: '100%', marginLeft: 0
+                    }}
                     icon={
                         <Icon
                             name='trash'
@@ -192,6 +203,9 @@ export default class ItensDoPonto extends Component {
 
                 <Button
                     title=' Realizar Coleta'
+                    containerStyle={{
+                        width: '100%', marginLeft: 0, marginTop: 10
+                    }}
                     icon={
                         <Icon
                             name='eye'

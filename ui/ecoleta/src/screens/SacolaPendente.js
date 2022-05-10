@@ -23,7 +23,14 @@ export default class SacolaPendente extends Component {
     };
 
     componentDidMount() {
-        this.buscaSacolasPendentes();
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            console.log('Atualizando tela SacolaPendente');
+            this.buscaSacolasPendentes();
+        });
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     render() {
@@ -36,17 +43,16 @@ export default class SacolaPendente extends Component {
             }
         });
 
-        const verSacola = (items) => {
-            console.log('Visualizar itens');
-            this.props.navigation.navigate('Itens Pendentes', { items: items });
+        const verSacola = (bag_id, items) => {
+            this.props.navigation.navigate('Itens Pendentes', { bag_id: bag_id, items: items });
         }
 
         return (
             <View style={styles.container} >
                 <Button
-                    style={{
-                        width: 60,
-                        marginLeft: 350
+                    title=' Voltar'
+                    containerStyle={{
+                        width: '100%', marginLeft: 0
                     }}
                     icon={
                         <Icon
@@ -58,13 +64,19 @@ export default class SacolaPendente extends Component {
                     onPress={() => this.props.navigation.goBack()}
                 />
 
-                <ScrollView>
+                <ScrollView
+                    style={{
+                        padding: 10
+                    }}
+                >
                     {sacolas.map(item => (
                         <View key={item.key}>
                             <Text
                                 style={styles.item}
-                                onPress={() => verSacola(item.items)}
-                            >{item.name}</Text>
+                                onPress={() => verSacola(item.key, item.items)}
+                            >
+                                #{item.key} - {item.name}
+                            </Text>
                         </View>
                     ))
                     }

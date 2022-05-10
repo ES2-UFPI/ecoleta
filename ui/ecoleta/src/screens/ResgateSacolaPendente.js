@@ -23,7 +23,14 @@ export default class ResgateSacolaPendente extends Component {
     };
 
     componentDidMount() {
-        this.buscaresgateDeSacolasPendentes();
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            console.log('Atualizando tela ResgateSacolaPendente');
+            this.buscaresgateDeSacolasPendentes();
+        });
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     render() {
@@ -44,9 +51,9 @@ export default class ResgateSacolaPendente extends Component {
         return (
             <View style={styles.container} >
                 <Button
-                    style={{
-                        width: 60,
-                        marginLeft: 350
+                    title=' Voltar'
+                    containerStyle={{
+                        width: '100%', marginLeft: 0
                     }}
                     icon={
                         <Icon
@@ -58,13 +65,20 @@ export default class ResgateSacolaPendente extends Component {
                     onPress={() => this.props.navigation.goBack()}
                 />
 
-                <ScrollView>
+                <ScrollView
+                    style={{
+                        padding: 10,
+                        marginBottom: 10
+                    }}
+                >
                     {sacolas.map(item => (
                         <View key={item.key}>
                             <Text
                                 style={styles.item}
                                 onPress={() => verSacola(item.items, item.key)}
-                            >{item.name}</Text>
+                            >
+                                #{item.key} - {item.name}
+                            </Text>
                         </View>
                     ))
                     }
