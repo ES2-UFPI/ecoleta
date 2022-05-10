@@ -18,7 +18,7 @@ class ItemsByBagRescue extends JsonResource
             'id' => $this->resource->id,
             'recue' => $this->resource->recue,
             'bag' => new Bag($this->resource->bag()->first()),
-            'company' => $this->resource->company()->first(),
+            // 'company' => $this->resource->company()->first(),
             // 'item' => $this->resource->item()->get(),
         ];
     }

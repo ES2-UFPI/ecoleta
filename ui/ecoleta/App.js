@@ -19,6 +19,7 @@ import ItensFinalizados from './src/screens/ItensFinalizados';
 import ItensDeResgateFinalizados from './src/screens/ItensDeResgateFinalizados';
 import ItensDeResgatePendentes from './src/screens/ItensDeResgatePendentes';
 import SacolasPendentes from './src/screens/SacolasPendentes';
+import PesquisaPorPontoDeColeta from './src/screens/PesquisaPorPontoDeColeta';
 
 function Exit(){
   return (
@@ -46,6 +47,7 @@ function HomeScreen({ navigation }) {
       <Stack.Screen name="Início" component={Home} />
       <Stack.Screen name="Região" component={Regiao} />
       <Stack.Screen name="Pontos de Coleta" component={PontoDeColeta} />
+      <Stack.Screen name="Pesquisa de Pontos de Coleta" component={PesquisaPorPontoDeColeta} />
       <Stack.Screen name="Itens do Ponto" component={ItensDoPonto} />
       <Stack.Screen name="Itens Pendentes" component={ItensPendentes} />
       <Stack.Screen name="Itens de Resgate Pendentes" component={ItensDeResgatePendentes} />

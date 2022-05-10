@@ -3,23 +3,34 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import api from '../services/api';
+
 export default class ItensDeResgatePendentes extends Component {
     constructor() {
         super();
     }
 
     state = {
-        items: []
+        items: [],
+        bagRescueId: ''
     }
 
     componentDidMount() {
-        const { items } = this.props.route.params;
+        const { items, bagRescueId } = this.props.route.params;
         this.setState({
-            items: items
+            items: items,
+            bagRescueId: bagRescueId
         });
     }
 
     render() {
+
+        const finalizarSacola = async () => {
+            await api.put(`/admin/bag-rescue/${this.state.bagRescueId}`, { recue: true }).then(response => {
+                console.log('resgate de sacola realizada com sucesso!');
+                this.props.navigation.navigate('Resgate de Sacolas Finalizadas');
+            });
+        }
 
         return (
             <View style={styles.container} >
@@ -53,6 +64,19 @@ export default class ItensDeResgatePendentes extends Component {
                     ))
                     }
                 </ScrollView>
+
+                <Button
+                    style={{ margin: 10 }}
+                    title=' Confirmar retirada'
+                    icon={
+                        <Icon
+                            name='trash'
+                            size={15}
+                            color='blue'
+                        />
+                    }
+                    onPress={() => finalizarSacola()}
+                />
             </View>
         );
     }
