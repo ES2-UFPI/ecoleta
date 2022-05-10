@@ -53,6 +53,8 @@ export default class PontoDeColeta extends Component {
                     onPress={() => this.props.navigation.goBack()}
                 />
 
+                <Text h3>Pontos de coleta</Text>
+
                 <ScrollView>
                     {pontos.map(item => (
                         <View key={item.key}>
