@@ -12,7 +12,7 @@ class CollectPoint extends Model
     protected $table = 'collect_points';
 
     protected $fillable = [
-        'region_id', 'title',
+        'region_id', 'title', 'latitude', 'longitude'
     ];
 
     public function region()

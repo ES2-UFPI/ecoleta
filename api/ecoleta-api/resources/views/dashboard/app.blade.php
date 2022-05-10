@@ -510,6 +510,26 @@
                     }
                 });
             });
+            // SCRIPT RESPONSÁVEL POR BUSCAR LATITUDE E LONGITUDE DO CEP DIGITADO
+            // $('#buscarCEP').on('click', function(e){
+            //     e.preventDefault();
+            //     const cep = $('#cep').val();
+            //     if(cep == ''){
+            //         alert('Digite um cep');
+            //         return;
+            //     }
+
+            //     const url = `https://brasilapi.com.br/api/cep/v2/${cep}`;
+
+            //     $.ajax({
+            //         url: url,
+            //         type: "get",
+            //         dataType: "json",
+            //         success: function(response) {
+            //             console.log(response.location.coordinates)
+            //         }
+            //     });
+            // })
         });
     </script>
 

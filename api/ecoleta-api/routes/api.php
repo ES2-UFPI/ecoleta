@@ -23,7 +23,7 @@ Route::prefix('admin')->group(function () {
     // rotas dos pontos de coleta
     Route::resource('collect_point', CollectPointController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::get('/collect_point/region/{region}', [CollectPointController::class, 'showCollectPointsByRegionID']);
-    Route::get('/collect_point/search/{queryItem}', [CollectPointController::class, 'showCollectPointsByQueryItem']);
+    Route::get('/collect_point/search/{queryItem}/city/{city}', [CollectPointController::class, 'showCollectPointsByQueryItem']);
 
     // rotas dos items de um ponto de coleta
     Route::resource('collectionItem', CollectionItemController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
