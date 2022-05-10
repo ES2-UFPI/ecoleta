@@ -114,7 +114,8 @@ class CollectionItemController extends Controller
             return $this->sendError('Item de ponto de coleta não encontrado.');
         }
 
-        $collectionItem->delete();
+        if (!$collectionItem->delete())
+            return redirect()->route('dashboard.collectitem.index')->withErrors('Erro');
 
         return redirect()->route('dashboard.collectitem.index');
     }

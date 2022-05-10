@@ -14,6 +14,12 @@ import SacolaPendente from './src/screens/SacolaPendente';
 import SacolaEntregue from './src/screens/SacolaEntregue';
 import ResgateSacolaPendente from './src/screens/ResgateSacolaPendente';
 import ResgateSacolaFinalizada from './src/screens/ResgateSacolaFinalizada';
+import ItensPendentes from './src/screens/ItensPendentes';
+import ItensFinalizados from './src/screens/ItensFinalizados';
+import ItensDeResgateFinalizados from './src/screens/ItensDeResgateFinalizados';
+import ItensDeResgatePendentes from './src/screens/ItensDeResgatePendentes';
+import SacolasPendentes from './src/screens/SacolasPendentes';
+import PesquisaPorPontoDeColeta from './src/screens/PesquisaPorPontoDeColeta';
 
 function Exit(){
   return (
@@ -41,7 +47,13 @@ function HomeScreen({ navigation }) {
       <Stack.Screen name="Início" component={Home} />
       <Stack.Screen name="Região" component={Regiao} />
       <Stack.Screen name="Pontos de Coleta" component={PontoDeColeta} />
+      <Stack.Screen name="Pesquisa de Pontos de Coleta" component={PesquisaPorPontoDeColeta} />
       <Stack.Screen name="Itens do Ponto" component={ItensDoPonto} />
+      <Stack.Screen name="Itens Pendentes" component={ItensPendentes} />
+      <Stack.Screen name="Itens de Resgate Pendentes" component={ItensDeResgatePendentes} />
+      <Stack.Screen name="Itens Entregues" component={ItensFinalizados} />
+      <Stack.Screen name="Itens de Resgate Entregues" component={ItensDeResgateFinalizados} />
+      <Stack.Screen name="Sacolas Pendentes" component={SacolasPendentes} />
     </Stack.Navigator>
   );
 }
@@ -52,7 +64,7 @@ const LeftDrawerScreen = () => {
   return (
     <LeftDrawer.Navigator screenOptions={{ drawerPosition: 'left' }}>
       <LeftDrawer.Screen name="Ecoleta" component={HomeScreen} />
-      <LeftDrawer.Screen name="Sacolas Pendentes" component={SacolaPendente} />
+      <LeftDrawer.Screen name="Sacola Pendente" component={SacolaPendente} />
       <LeftDrawer.Screen name="Sacolas Entregues" component={SacolaEntregue} />
       <LeftDrawer.Screen name="Resgate de Sacolas Pendentes" component={ResgateSacolaPendente} />
       <LeftDrawer.Screen name="Resgate de Sacolas Finalizadas" component={ResgateSacolaFinalizada} />

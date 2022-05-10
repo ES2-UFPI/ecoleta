@@ -7,6 +7,11 @@
         </div>
         <div class="card-body">
             <div class="table-responsive">
+                @if ($errors->any())
+                    <div class="alert alert-danger" role="alert">
+                        Houve um erro ao tentar excluir essa região. Verifique se há dados vinculados a ela, pois você só poderá excluir caso a região não esteja vinculado a nenhuma entidade.
+                    </div>
+                @endif
                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                     <thead>
                         <tr>

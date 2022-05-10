@@ -17,6 +17,7 @@ class Bag extends JsonResource
         return [
             'id' => $this->resource->id,
             'collect_point' => $this->resource->collectPoint()->first(),
+            'items' => ItemByCollectionItem::collection($this->resource->item()->get()),
         ];
     }
 }

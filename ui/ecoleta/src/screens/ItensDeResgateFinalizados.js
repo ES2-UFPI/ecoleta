@@ -3,29 +3,22 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import api from '../services/api';
-
-export default class SacolaPendente extends Component {
+export default class ItensDeResgateFinalizados extends Component {
     constructor() {
         super();
     }
 
     state = {
-        sacolasPendentes: []
+        items: []
     }
-
-    buscaSacolasPendentes = async () => {
-        await api.get(`/admin/bags/pending`).then(response => {
-            this.setState({
-                sacolasPendentes: response.data.data.bags
-            });
-        });
-    };
 
     componentDidMount() {
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
-            console.log('Atualizando tela SacolaPendente');
-            this.buscaSacolasPendentes();
+            console.log('Atualizando tela ItensDeResgateFinalizados');
+            const { items } = this.props.route.params;
+            this.setState({
+                items: items
+            });
         });
     }
 
@@ -34,23 +27,11 @@ export default class SacolaPendente extends Component {
     }
 
     render() {
-        const sacolas = this.state.sacolasPendentes.map((value, index) => {
-            return {
-                key: value.id,
-                name: value.collect_point.title,
-                value: value.collect_point.id,
-                items: value.item,
-            }
-        });
-
-        const verSacola = (bag_id, items) => {
-            this.props.navigation.navigate('Itens Pendentes', { bag_id: bag_id, items: items });
-        }
 
         return (
             <View style={styles.container} >
                 <Button
-                    title=' Voltar'
+                title=' Voltar'
                     containerStyle={{
                         width: '100%', marginLeft: 0
                     }}
@@ -64,19 +45,17 @@ export default class SacolaPendente extends Component {
                     onPress={() => this.props.navigation.goBack()}
                 />
 
-                <ScrollView
-                    style={{
-                        padding: 10
-                    }}
-                >
-                    {sacolas.map(item => (
-                        <View key={item.key}>
+                <Text h3>Itens</Text>
+
+                <ScrollView>
+                    {this.state.items.map(item => (
+                        <View key={item.id}>
                             <Text
                                 style={styles.item}
-                                onPress={() => verSacola(item.key, item.items)}
                             >
-                                #{item.key} - {item.name}
+                                {item.collectionItem.title}
                             </Text>
+                            <Text h6>Qtd.: {item.quantity}</Text>
                         </View>
                     ))
                     }

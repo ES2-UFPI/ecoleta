@@ -23,6 +23,7 @@ Route::prefix('admin')->group(function () {
     // rotas dos pontos de coleta
     Route::resource('collect_point', CollectPointController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::get('/collect_point/region/{region}', [CollectPointController::class, 'showCollectPointsByRegionID']);
+    Route::get('/collect_point/search/{queryItem}/city/{city}', [CollectPointController::class, 'showCollectPointsByQueryItem']);
 
     // rotas dos items de um ponto de coleta
     Route::resource('collectionItem', CollectionItemController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
@@ -32,6 +33,7 @@ Route::prefix('admin')->group(function () {
     Route::resource('bag', BagController::class)->only(['store', 'show', 'update', 'destroy']);
     Route::get('/bags/pending', [BagController::class, 'listAllBagPendding']);
     Route::get('/bags/finished', [BagController::class, 'listAllBagFinished']);
+    Route::get('/bags/finished/{collectPoint}', [BagController::class, 'listAllBagFinishedByCollectPoint']);
 
     // rotas dos items de um item de ponto de coleta(itens da sacola de descarte)
     Route::get('/item/{collectionItem}', [ItemController::class, 'listAllquantity']);

@@ -29,7 +29,7 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        @foreach ($collectionItems as $collectItem)
+                        @foreach ($collectPoint->collectionItem()->get() as $collectItem)
                             <tr>
                                 <td>{{ $collectItem->collectPoint()->first()->title }}
                                 </td>

@@ -12,7 +12,7 @@ class CollectPoint extends Model
     protected $table = 'collect_points';
 
     protected $fillable = [
-        'region_id', 'title',
+        'region_id', 'title', 'latitude', 'longitude'
     ];
 
     public function region()
@@ -23,5 +23,15 @@ class CollectPoint extends Model
     public function collectionItem()
     {
         return $this->hasMany(CollectionItem::class, 'collect_point_id', 'id');
+    }
+
+    public function delete()
+    {
+        if (!is_null($this->collectionItem()->first()) || !is_null($this->region()->first()))
+            return false;
+
+        parent::delete();
+
+        return true;
     }
 }
