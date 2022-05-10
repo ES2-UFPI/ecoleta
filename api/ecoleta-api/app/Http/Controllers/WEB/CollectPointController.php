@@ -54,6 +54,8 @@ class CollectPointController extends Controller
         $collectPoint = new CollectPoint();
         $collectPoint->region_id = $request->region_id;
         $collectPoint->title = $request->title;
+        $collectPoint->latitude = $request->latitude;
+        $collectPoint->longitude = $request->longitude;
         $collectPoint->save();
 
         return redirect()->route('dashboard.collectpoint.show', ['collectPoint' => $collectPoint->id]);
@@ -79,6 +81,19 @@ class CollectPointController extends Controller
         ]);
     }
 
+    public function items(int $collectPoint)
+    {
+        $collectPoint = CollectPoint::where('id', $collectPoint)->first();
+        if (is_null($collectPoint)) {
+            return $this->sendError('Ponto de coleta não encontrado.');
+        }
+
+        return view('dashboard.collectpoint.items', [
+            'collectPoint' => $collectPoint,
+            'message' => 'Ponto de coleta encontrado com sucesso!'
+        ]);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -96,6 +111,8 @@ class CollectPointController extends Controller
         if ($request->has('region_id'))
             $collectPoint->region_id = $request->region_id;
         $collectPoint->title = $request->title;
+        $collectPoint->latitude = $request->latitude;
+        $collectPoint->longitude = $request->longitude;
         $collectPoint->save();
 
         return redirect()->route('dashboard.collectpoint.show', ['collectPoint' => $collectPoint->id]);
@@ -114,7 +131,8 @@ class CollectPointController extends Controller
             return $this->sendError('Ponto de coleta não encontrado.');
         }
 
-        $collectPoint->delete();
+        if (!$collectPoint->delete())
+            return redirect()->route('dashboard.collectpoint.index')->withErrors('Erro na exclusão');
 
         return redirect()->route('dashboard.collectpoint.index');
     }

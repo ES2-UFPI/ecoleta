@@ -24,4 +24,14 @@ class Region extends Model
     {
         return $this->hasMany(CollectPoint::class, 'region_id', 'id');
     }
+
+    public function delete()
+    {
+        if (!is_null($this->collectPoint()->first()))
+            return false;
+
+        parent::delete();
+
+        return true;
+    }
 }

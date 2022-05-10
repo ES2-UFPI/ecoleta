@@ -1,31 +1,33 @@
 import React, { useState, Component } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, BackHandler, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import api from '../services/api';
 
-export default class SacolaEntregue extends Component {
+export default class SacolasPendentes extends Component {
     constructor() {
         super();
     }
 
     state = {
-        sacolasFinalizadas: []
+        pontoDeColetaId: '',
+        bags: []
     }
 
-    buscasacolasFinalizadas = async () => {
-        await api.get(`/admin/bags/finished`).then(response => {
+    buscaSacolasPendentes = async (pontoDeColetaId) => {
+        await api.get(`/admin/bags/finished/${pontoDeColetaId}`).then(response => {
             this.setState({
-                sacolasFinalizadas: response.data.data.bags
+                bags: response.data.data.bags,
             });
         });
     };
 
     componentDidMount() {
         this._unsubscribe = this.props.navigation.addListener('focus', () => {
-            console.log('Atualizando tela SacolaEntregue');
-            this.buscasacolasFinalizadas();
+            console.log('Atualizando tela SacolasPendentes');
+            const { pontoDeColetaId } = this.props.route.params;
+            this.buscaSacolasPendentes(pontoDeColetaId);
         });
     }
 
@@ -34,18 +36,18 @@ export default class SacolaEntregue extends Component {
     }
 
     render() {
-        const sacolas = this.state.sacolasFinalizadas.map((value, index) => {
-            return {
-                key: value.id,
-                name: value.collect_point.title,
-                value: value.collect_point.id,
-                items: value.item,
-            }
-        });
 
-        const verSacola = (items) => {
-            console.log('Visualizar itens');
-            this.props.navigation.navigate('Itens Entregues', { items: items });
+        const resgatarSacola = async (bag_id) => {
+            const body = {
+                company_id: 2,
+                bag_id: bag_id
+            }
+            console.log(body)
+            await api.post(`/admin/bag-rescue`, body).then(response => {
+                console.log('cadastro do resgate da sacola realizada com sucesso!');
+                Alert.alert('Cadastro do resgate da sacola realizada com sucesso!');
+                this.props.navigation.navigate('Resgate de Sacolas Pendentes');
+            });
         }
 
         return (
@@ -65,22 +67,21 @@ export default class SacolaEntregue extends Component {
                     onPress={() => this.props.navigation.goBack()}
                 />
 
-                <ScrollView
-                    style={{
-                        padding: 10
-                    }}
-                >
-                    {sacolas.map(item => (
-                        <View key={item.key}>
+                <Text h3>Sacolas:</Text>
+                <Text h5>Selecione uma sacola para realizar o resgate.</Text>
+
+                <ScrollView>
+                    {this.state.bags.map(bag => (
+                        <View key={bag.id}>
                             <Text
                                 style={styles.item}
-                                onPress={() => verSacola(item.items)}
+                                onPress={() => resgatarSacola(bag.id)}
                             >
-                                #{item.key} - {item.name}
+                                #Sacola {bag.id}
                             </Text>
                             <Text h5>
-                                {item.items.map(value => {
-                                    return value.collectionItem.title + ` (${value.quantity} itens) , `
+                            {bag.item.map(item => {
+                                    return item.collectionItem.title + ` (${item.quantity} itens) , `
                                 })}
                             </Text>
                         </View>

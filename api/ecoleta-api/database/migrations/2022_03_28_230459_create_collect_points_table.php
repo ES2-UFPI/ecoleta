@@ -17,6 +17,8 @@ class CreateCollectPointsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('region_id');
             $table->string('title');
+            $table->string('latitude');
+            $table->string('longitude');
             $table->timestamps();
 
             $table->foreign('region_id')->references('id')->on('regions');

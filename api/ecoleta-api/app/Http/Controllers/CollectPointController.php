@@ -19,6 +19,19 @@ class CollectPointController extends Controller
         return $this->sendResponse(['collectPoints' => $region->collectPoint()->get()], 'Pontos de coleta encontrados');
     }
 
+    public function showCollectPointsByQueryItem($queryItem, $city)
+    {
+        $collectPoint = CollectPoint::join('collection_items', 'collection_items.collect_point_id', 'collect_points.id')
+            ->join('regions', 'regions.id', 'collect_points.region_id')
+            ->groupBy('collect_points.id')
+            ->where('collection_items.title', 'like', '%' . $queryItem . '%')
+            ->where('regions.city_id', $city)
+            ->select('collect_points.id', 'collect_points.title')
+            ->get();
+
+        return $this->sendResponse(['collectPoint' => $collectPoint], 'Pontos de coleta encontrados');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -40,6 +53,8 @@ class CollectPointController extends Controller
         $collectPoint = new CollectPoint();
         $collectPoint->region_id = $request->region_id;
         $collectPoint->title = $request->title;
+        $collectPoint->latitude = $request->latitude;
+        $collectPoint->longitude = $request->longitude;
         $collectPoint->save();
 
         return $this->sendResponse(['collectPoint' => $collectPoint], 'Ponto de coleta cadastrado com sucesso!');
@@ -78,6 +93,8 @@ class CollectPointController extends Controller
         if ($request->has('region_id'))
             $collectPoint->region_id = $request->region_id;
         $collectPoint->title = $request->title;
+        $collectPoint->latitude = $request->latitude;
+        $collectPoint->longitude = $request->longitude;
         $collectPoint->save();
 
         return $this->sendResponse(['collectPoint' => $collectPoint], 'Ponto de Coleta cadastrado com sucesso!');
@@ -96,7 +113,8 @@ class CollectPointController extends Controller
             return $this->sendError('Ponto de coleta não encontrado.');
         }
 
-        $collectPoint->delete();
+        if (!$collectPoint->delete())
+            return $this->sendError('Você só pode excluir um ponto de coleta caso ele não esteja vinculado a nada.');
 
         return $this->sendResponse([], 'Ponto de coleta excluído com sucesso!');
     }

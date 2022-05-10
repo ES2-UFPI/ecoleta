@@ -95,7 +95,8 @@ class RegionController extends Controller
             return $this->sendError('Região não encontrada.');
         }
 
-        $region->delete();
+        if (!$region->delete())
+            return $this->sendError('Região não pode ser excluída pois há dados vinculados a essa região');
 
         return $this->sendResponse([], 'Região excluída com sucesso!');
     }

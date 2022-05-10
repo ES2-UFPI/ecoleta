@@ -37,6 +37,25 @@
                     <input required type="text" class="form-control" id="nome" name="title" placeholder="Ex: Mocambinho">
                 </div>
             </div>
+            {{-- <div class="col-md-4">
+                <div class="form-group">
+                    <label for="cep">CEP</label>
+                    <input required type="text" class="form-control" id="cep" name="cep" placeholder="Ex: 64010-150">
+                    <button class="btn btn-primary mt-1 w-100" id="buscarCEP">Buscar</button>
+                </div>
+            </div> --}}
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="latitude">Latitude</label>
+                    <input required type="text" class="form-control" id="latitude" name="latitude" placeholder="">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="longitude">Logitude</label>
+                    <input required type="text" class="form-control" id="longitude" name="longitude" placeholder="">
+                </div>
+            </div>
             <div class="col-md-12">
                 <button type="submit" class="btn btn-primary">Cadastrar</button>
             </div>
