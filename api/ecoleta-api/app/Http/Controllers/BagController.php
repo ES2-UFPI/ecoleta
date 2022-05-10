@@ -6,6 +6,7 @@ use App\Http\Requests\StoreBag;
 use App\Http\Requests\UpdateBag;
 use App\Http\Resources\ItemsByBag;
 use App\Models\Bag;
+use App\Models\CollectPoint;
 use App\Models\Item;
 
 class BagController extends Controller
@@ -26,6 +27,18 @@ class BagController extends Controller
     public function listAllBagFinished()
     {
         $bags = Bag::where('discarded', true)->where('user_id', 1)->get();
+
+        return $this->sendResponse(['bags' => ItemsByBag::collection($bags)], 'Sacola de descarte encontradas');
+    }
+
+    public function listAllBagFinishedByCollectPoint($collectPoint)
+    {
+        $collectPoint = CollectPoint::where('id', $collectPoint)->first();
+        if (is_null($collectPoint)) {
+            return $this->sendError('Ponto de coleta não encontrado.');
+        }
+
+        $bags = Bag::where('discarded', true)->where('collect_point_id', $collectPoint->id)->get();
 
         return $this->sendResponse(['bags' => ItemsByBag::collection($bags)], 'Sacola de descarte encontradas');
     }
