@@ -100,6 +100,11 @@ export default class ItensDoPonto extends Component {
             // console.log('\n---inicio---', this.state.itensBag, '\n---fim---')
         }
 
+        const resgateDeSacolas = () => {
+            console.log('realizar resgate de sacolas');
+            this.props.navigation.navigate('Sacolas Pendentes', {pontoDeColetaId: this.state.pontoDeColetaID});
+        }
+
         const { modalVisible } = this.state;
 
         return (
@@ -174,7 +179,6 @@ export default class ItensDoPonto extends Component {
                 </Modal>
 
                 <Button
-                    style={{ margin: 10 }}
                     title=' Realizar Descarte'
                     icon={
                         <Icon
@@ -187,7 +191,6 @@ export default class ItensDoPonto extends Component {
                 />
 
                 <Button
-                    style={{ margin: 10 }}
                     title=' Realizar Coleta'
                     icon={
                         <Icon
@@ -196,6 +199,7 @@ export default class ItensDoPonto extends Component {
                             color='blue'
                         />
                     }
+                    onPress={() => resgateDeSacolas()}
                 />
             </View>
         );
