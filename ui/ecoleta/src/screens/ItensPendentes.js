@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -11,21 +11,31 @@ export default class ItensPendentes extends Component {
     }
 
     state = {
+        bag_id: '',
         items: []
     }
 
     componentDidMount() {
-        const { items } = this.props.route.params;
-        this.setState({
-            items: items
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            console.log('Atualizando tela ItensPendentes');
+            const { bag_id, items } = this.props.route.params;
+            this.setState({
+                bag_id: bag_id,
+                items: items
+            });
         });
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     render() {
 
         const finalizarSacola = async () => {
-            await api.put(`/admin/bag/${this.state.items[0].bag_id}`, { discarded: true }).then(response => {
+            await api.put(`/admin/bag/${this.state.bag_id}`, { discarded: true }).then(response => {
                 console.log('cadastro de sacola realizada com sucesso!');
+                Alert.alert('Cadastro de sacola realizada com sucesso!');
                 this.props.navigation.navigate('Sacolas Entregues');
             });
         }
@@ -33,9 +43,9 @@ export default class ItensPendentes extends Component {
         return (
             <View style={styles.container} >
                 <Button
-                    style={{
-                        width: 60,
-                        marginLeft: 350
+                    title=' Voltar'
+                    containerStyle={{
+                        width: '100%', marginLeft: 0
                     }}
                     icon={
                         <Icon
@@ -64,7 +74,9 @@ export default class ItensPendentes extends Component {
                 </ScrollView>
 
                 <Button
-                    style={{ margin: 10 }}
+                    containerStyle={{
+                        width: '100%', marginLeft: 0
+                    }}
                     title=' Finalizar sacola'
                     icon={
                         <Icon

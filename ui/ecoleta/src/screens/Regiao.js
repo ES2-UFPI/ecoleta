@@ -11,6 +11,12 @@ export default class Regiao extends Component {
     }
 
     state = {
+        mapRegion: {
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+        },
         regioes: [],
         textItem: '',
         region: '',
@@ -26,10 +32,17 @@ export default class Regiao extends Component {
     };
 
     componentDidMount() {
-        this.setState({
-            city: this.props.route.params.cityID
-        })
-        this.buscaRegioes(this.props.route.params.cityID);
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            console.log('Atualizando tela Regiao');
+            this.setState({
+                city: this.props.route.params.cityID
+            })
+            this.buscaRegioes(this.props.route.params.cityID);
+        });
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     render() {
@@ -50,9 +63,9 @@ export default class Regiao extends Component {
         return (
             <View style={styles.container} >
                 <Button
-                    style={{
-                        width: 60,
-                        marginLeft: 350
+                title=' Voltar'
+                    containerStyle={{
+                        width: '100%', marginLeft: 0
                     }}
                     icon={
                         <Icon
@@ -78,9 +91,8 @@ export default class Regiao extends Component {
                     onChangeText={value => this.setState({ textItem: value })}
                 />
                 <Button
-                    style={{
-                        width: 60,
-                        marginLeft: 350
+                    containerStyle={{
+                        width: '100%', marginLeft: 0
                     }}
                     icon={
                         <Icon
@@ -92,6 +104,9 @@ export default class Regiao extends Component {
                     title=' Pesquisar'
                     onPress={() => pesquisarPorPonto()}
                 />
+
+                <Text h4 style={{marginTop: 10}}>Lista de regiões:</Text>
+                <Text h5>Selecione uma região e visualize o mapa dos pontos de coleta.</Text>
 
                 <ScrollView>
                     {regioes.map(item => (
@@ -115,5 +130,5 @@ const styles = StyleSheet.create({
         margin: 5,
         fontSize: 20,
         backgroundColor: '#eee',
-    },
+    }
 });

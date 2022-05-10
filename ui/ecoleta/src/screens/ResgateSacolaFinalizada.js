@@ -23,14 +23,21 @@ export default class ResgateSacolaFinalizada extends Component {
     };
 
     componentDidMount() {
-        this.buscaresgateDeSacolasFinalizadas();
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            console.log('Atualizando tela ResgateSacolaFinalizada');
+            this.buscaresgateDeSacolasFinalizadas();
+        });
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     render() {
         const sacolas = this.state.resgateDeSacolasFinalizadas.map((value, index) => {
-            return { 
-                name: value.bag.collect_point.title, 
-                value: value.bag.collect_point.id, 
+            return {
+                name: value.bag.collect_point.title,
+                value: value.bag.collect_point.id,
                 key: value.id,
                 items: value.bag.items,
             }
@@ -44,9 +51,9 @@ export default class ResgateSacolaFinalizada extends Component {
         return (
             <View style={styles.container} >
                 <Button
-                    style={{
-                        width: 60,
-                        marginLeft: 350
+                    title=' Voltar'
+                    containerStyle={{
+                        width: '100%', marginLeft: 0
                     }}
                     icon={
                         <Icon
@@ -58,13 +65,19 @@ export default class ResgateSacolaFinalizada extends Component {
                     onPress={() => this.props.navigation.goBack()}
                 />
 
-                <ScrollView>
+                <ScrollView
+                    style={{
+                        padding: 10
+                    }}
+                >
                     {sacolas.map(item => (
                         <View key={item.key}>
                             <Text
                                 style={styles.item}
                                 onPress={() => verSacola(item.items)}
-                            >{item.name}</Text>
+                            >
+                                #{item.key} - {item.name}
+                            </Text>
                         </View>
                     ))
                     }

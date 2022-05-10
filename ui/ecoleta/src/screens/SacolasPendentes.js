@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import { BackHandler, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, BackHandler, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -24,8 +24,15 @@ export default class SacolasPendentes extends Component {
     };
 
     componentDidMount() {
-        const { pontoDeColetaId } = this.props.route.params;
-        this.buscaSacolasPendentes(pontoDeColetaId);
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            console.log('Atualizando tela SacolasPendentes');
+            const { pontoDeColetaId } = this.props.route.params;
+            this.buscaSacolasPendentes(pontoDeColetaId);
+        });
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     render() {
@@ -38,6 +45,7 @@ export default class SacolasPendentes extends Component {
             console.log(body)
             await api.post(`/admin/bag-rescue`, body).then(response => {
                 console.log('cadastro do resgate da sacola realizada com sucesso!');
+                Alert.alert('Cadastro do resgate da sacola realizada com sucesso!');
                 this.props.navigation.navigate('Resgate de Sacolas Pendentes');
             });
         }
@@ -45,9 +53,9 @@ export default class SacolasPendentes extends Component {
         return (
             <View style={styles.container} >
                 <Button
-                    style={{
-                        width: 60,
-                        marginLeft: 350
+                    title=' Voltar'
+                    containerStyle={{
+                        width: '100%', marginLeft: 0
                     }}
                     icon={
                         <Icon
@@ -69,7 +77,10 @@ export default class SacolasPendentes extends Component {
                                 style={styles.item}
                                 onPress={() => resgatarSacola(bag.id)}
                             >
-                                {bag.item.map(item => {
+                                #Sacola {bag.id}
+                            </Text>
+                            <Text h5>
+                            {bag.item.map(item => {
                                     return item.collectionItem.title + ` (${item.quantity} itens) , `
                                 })}
                             </Text>

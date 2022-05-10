@@ -1,5 +1,5 @@
 import React, { useEffect, useState, Component } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 // import { Picker } from '@react-native-picker/picker';
@@ -27,7 +27,14 @@ export default class Home extends Component {
   };
 
   componentDidMount() {
-    this.buscaEstados();
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      console.log('Atualizando tela Home');
+      this.buscaEstados();
+    });
+  }
+
+  componentWillUnmount() {
+    this._unsubscribe();
   }
 
   render() {
@@ -63,17 +70,17 @@ export default class Home extends Component {
     return (
       <View style={styles.container}>
         <Text h1>Ecoleta</Text>
-        <Text h5 style={{marginBottom: 20}}>Seu marketplace de coletas de resíduos.</Text>
+        <Text h5 style={{ marginBottom: 20 }}>Seu marketplace de coletas de resíduos.</Text>
 
-        <PickerInput 
-        label='Escolha um estado'
-        itens={this.state.estados} 
-        onValueChange={setaCidades} 
-        value={this.state.estadoSelecionado} />
+        <PickerInput
+          label='Escolha um estado'
+          itens={this.state.estados}
+          onValueChange={setaCidades}
+          value={this.state.estadoSelecionado} />
 
-        <PickerInput 
-        label='Escolha uma cidade'
-        itens={this.state.cidades}
+        <PickerInput
+          label='Escolha uma cidade'
+          itens={this.state.cidades}
           onValueChange={(value) => this.setState({ cidadeSelecionada: value })}
           value={this.state.cidadeSelecionada} />
 

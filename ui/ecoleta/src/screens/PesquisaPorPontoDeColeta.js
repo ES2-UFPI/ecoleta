@@ -26,10 +26,17 @@ export default class PesquisaPorPontoDeColeta extends Component {
     };
 
     componentDidMount() {
-        this.setState({
-            search: this.props.route.params.search
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            console.log('Atualizando tela PesquisaPorPontoDeColeta');
+            this.setState({
+                search: this.props.route.params.search
+            });
+            this.buscaPontosDeColeta(this.props.route.params.search, this.props.route.params.city);
         });
-        this.buscaPontosDeColeta(this.props.route.params.search, this.props.route.params.city);
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     render() {
@@ -47,10 +54,7 @@ export default class PesquisaPorPontoDeColeta extends Component {
         return (
             <View style={styles.container} >
                 <Button
-                    style={{
-                        width: 60,
-                        marginLeft: 350
-                    }}
+                    title=' Voltar'
                     icon={
                         <Icon
                             name='arrow-left'

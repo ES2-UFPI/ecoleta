@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import { Text, Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -16,11 +16,18 @@ export default class ItensDeResgatePendentes extends Component {
     }
 
     componentDidMount() {
-        const { items, bagRescueId } = this.props.route.params;
-        this.setState({
-            items: items,
-            bagRescueId: bagRescueId
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            console.log('Atualizando tela ItensDeResgatePendentes');
+            const { items, bagRescueId } = this.props.route.params;
+            this.setState({
+                items: items,
+                bagRescueId: bagRescueId
+            });
         });
+    }
+
+    componentWillUnmount() {
+        this._unsubscribe();
     }
 
     render() {
@@ -28,6 +35,7 @@ export default class ItensDeResgatePendentes extends Component {
         const finalizarSacola = async () => {
             await api.put(`/admin/bag-rescue/${this.state.bagRescueId}`, { recue: true }).then(response => {
                 console.log('resgate de sacola realizada com sucesso!');
+                Alert.alert('Resgate de sacola realizada com sucesso!');
                 this.props.navigation.navigate('Resgate de Sacolas Finalizadas');
             });
         }
@@ -35,9 +43,9 @@ export default class ItensDeResgatePendentes extends Component {
         return (
             <View style={styles.container} >
                 <Button
-                    style={{
-                        width: 60,
-                        marginLeft: 350
+                    title=' Voltar'
+                    containerStyle={{
+                        width: '100%', marginLeft: 0
                     }}
                     icon={
                         <Icon
@@ -66,7 +74,9 @@ export default class ItensDeResgatePendentes extends Component {
                 </ScrollView>
 
                 <Button
-                    style={{ margin: 10 }}
+                    containerStyle={{
+                        width: '100%', marginLeft: 0
+                    }}
                     title=' Confirmar retirada'
                     icon={
                         <Icon
