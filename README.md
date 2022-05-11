@@ -32,9 +32,9 @@ O APP (aplicativo em React Native) está implementado no diretório *ui/ecoleta*
 Para executar a API há ao total três formas: localhost, docker ou Heroku. [Veja o README da API](https://github.com/ES2-UFPI/ecoleta/tree/main/api/ecoleta-api) e siga as formas de instalação e execução.
 
 ## Como executar o App
-Para executar o APP, baixe no seu smartphone o aplicativo *expo*. Depois abra o link da enviroment *Application* e escaneie o QrCode para visualizar o projeto.
+Para executar o APP, baixe no seu smartphone o aplicativo *Expo*. Depois abra o link da enviroment *Application* e escaneie o QrCode para visualizar o projeto.
 
-PS: O link do Expo só funciona para Android. No IOS não é possível executar com o link do Expo. Para executar pelo IOS só há três formas:
+PS: O link do Expo só funciona para Android. No IOS não é possível executar com o link do Expo. Para executar pelo IOS só há duas formas:
 1. Rodar o projeto localmente e abrir um link local (se preferir, criar um tunnel e enviar o link para outra pessoa. Isso só vai funcionar enquanto o PC host estiver ligado).
 2. Comprar uma conta de develop da Apple.
 
