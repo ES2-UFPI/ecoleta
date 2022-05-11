@@ -1,7 +1,8 @@
 <p align="center">
-    ![version](https://img.shields.io/badge/version-1.0-blue)
-    ![backend](https://img.shields.io/badge/laravel-red)
-    ![frontend](https://img.shields.io/badge/react-native-red)
+    <a href="https://github.com/badges/shields/graphs/contributors" alt="Contributors">
+        <img src="https://img.shields.io/github/contributors/badges/shields" /></a>
+        <a href="https://github.com/ES2-UFPI/ecoleta/releases/tag/v1.0" alt="Version">
+        <img src="https://img.shields.io/badge/version-1.0-green" /></a>
 </p>
 
 # Projeto Ecoleta 
@@ -11,7 +12,7 @@
 ## Releases
 * [v0.1](https://github.com/ES2-UFPI/ecoleta/releases/tag/v0.1)
 * [v0.2](https://github.com/ES2-UFPI/ecoleta/releases/tag/v0.2.0)
-* [v1.0]()
+* [v1.0](https://github.com/ES2-UFPI/ecoleta/releases/tag/v1.0)
 
 ## API
 * [Link para a API no Heroku](https://ufpi-ecoleta.herokuapp.com/).
