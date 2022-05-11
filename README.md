@@ -5,6 +5,10 @@
         <img src="https://img.shields.io/github/contributors/badges/shields" /></a>
         <a href="https://github.com/ES2-UFPI/ecoleta/releases/tag/v1.0" alt="Version">
         <img src="https://img.shields.io/badge/version-1.0-green" /></a>
+        <a href="https://github.com/ES2-UFPI/ecoleta/tree/main/api/ecoleta-api" alt="Laravel">
+        <img src="https://img.shields.io/badge/backend-laravel-red" /></a>
+        <a href="https://github.com/ES2-UFPI/ecoleta/tree/main/ui/ecoleta" alt="React Native">
+        <img src="https://img.shields.io/badge/frontend-react%20native-blue" /></a>
 </p>
 
 
