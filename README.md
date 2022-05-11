@@ -28,6 +28,9 @@ A API está implementada no diretório *api/ecoleta-api*. Possui testes funciona
 
 O APP (aplicativo em React Native) está implementado no diretório *ui/ecoleta*. Possui um workflow para build e deploy para o expo.
 
+## Como executar a API
+Para executar a API a algumas formas. [Veja o README da API](https://github.com/ES2-UFPI/ecoleta/tree/main/api/ecoleta-api) e siga as formas de instalação e execução.
+
 ## Como executar o App
 Para executar o APP, baixe no seu smartphone o aplicativo *expo*. Depois abra o link da enviroment *Application* e escaneie o QrCode para visualizar o projeto.
 
