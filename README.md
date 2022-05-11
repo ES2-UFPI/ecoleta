@@ -1,10 +1,17 @@
+<p align="center">
+    ![version](https://img.shields.io/badge/version-1.0-blue)
+    ![backend](https://img.shields.io/badge/laravel-red)
+    ![frontend](https://img.shields.io/badge/react-native-red)
+</p>
+
 # Projeto Ecoleta 
 ## Sistema de Coleta e Escoamento de itens recicláveis
-### Versão 0.3
+### Versão 1.0
 
 ## Releases
 * [v0.1](https://github.com/ES2-UFPI/ecoleta/releases/tag/v0.1)
 * [v0.2](https://github.com/ES2-UFPI/ecoleta/releases/tag/v0.2.0)
+* [v1.0]()
 
 ## API
 * [Link para a API no Heroku](https://ufpi-ecoleta.herokuapp.com/).
@@ -20,7 +27,11 @@ A API está implementada no diretório *api/ecoleta-api*. Possui testes funciona
 O APP (aplicativo em React Native) está implementado no diretório *ui/ecoleta*. Possui um workflow para build e deploy para o expo.
 
 ## Como executar o App
-PS: Para executar o APP, baixe no seu smartphone o aplicativo *expo*. Depois abra o link da enviroment *Application* e escaneie o QrCode para visualizar o projeto.
+Para executar o APP, baixe no seu smartphone o aplicativo *expo*. Depois abra o link da enviroment *Application* e escaneie o QrCode para visualizar o projeto.
+
+PS: O link do Expo só funciona para Android. No IOS não é possível executar com o link do Expo. Para executar pelo IOS só há três formas:
+1. Rodar o projeto localmente e abrir um link local (se preferir, criar um tunnel e enviar o link para outra pessoa. Isso só vai funcionar enquanto o PC host estiver ligado).
+2. Comprar uma conta de develop da Apple.
 
 ## Wiki
 [Em nossa wiki](https://github.com/ES2-UFPI/ecoleta/wiki) detalhamos toda a estrutura do projeto, padrões de implementação, backlogs e tutoriais de instalação dos projetos.
