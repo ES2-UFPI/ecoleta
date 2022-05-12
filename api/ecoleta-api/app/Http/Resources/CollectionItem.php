@@ -17,7 +17,7 @@ class CollectionItem extends JsonResource
         return [
             'id' => $this->resource->id,
             'bag' => $this->resource->bag()->first(),
-            'item' => $this->resource->collectionItem->first(),
+            'item' => $this->resource->collectionItem()->first(),
             'quantity' => $this->resource->quantity,
         ];
     }

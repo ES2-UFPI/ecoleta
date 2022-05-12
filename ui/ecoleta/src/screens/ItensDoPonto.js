@@ -105,7 +105,7 @@ export default class ItensDoPonto extends Component {
                 this.props.navigation.navigate('Sacola Pendente');
             });
 
-            // console.log('\n---inicio---', this.state.itensBag, '\n---fim---')
+            // console.log('\n---inicio---', body, '\n---fim---')
         }
 
         const resgateDeSacolas = () => {
